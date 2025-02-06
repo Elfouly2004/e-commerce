@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:mrcandy/features/carts/data/model/cart_model.dart';
+import '../../../../../core/shared_widgets/custom_fav_dialog.dart';
 import '../../../data/model/product_model.dart';
 import '../../../data/repo/home_repo_implemetation.dart';
 import 'get_product_state.dart';
@@ -13,31 +17,18 @@ class ProductsCubit extends Cubit<ProductsState> {
   List<ProductModel> productList = [];
   List<CartItemModel> cartsList = [];
 
+  var favoritesBox = Hive.box('favorites-product');
+
 
 
 
   static ProductsCubit get(context) => BlocProvider.of(context);
 
-  // Future<void> fetchproducts() async {
-  //   emit(ProductsLoadingState());
-  //
-  //   final result = await homeRepo.get_product();
-  //   result.fold((failure) {
-  //     print("Error fetching products: ${failure.message}");
-  //     emit(ProductsFailureState(errorMessage: failure.message));
-  //   }, (right) {
-  //     productList = right;
-  //
-  //     print("Fetched products: $productList");  // Debug output
-  //     emit(ProductsSuccessState(productList));
-  //   });
-  // }
-
 
 
   Future<void> fetchproducts() async {
     if (productList.isNotEmpty) {
-      emit(ProductsSuccessState(List.from(productList)));
+      emit(ProductsSuccessState());
       return;
     }
 
@@ -51,8 +42,17 @@ class ProductsCubit extends Cubit<ProductsState> {
       },
           (right) {
         productList = right;
+
+        // تحديث المنتجات المحفوظة في Hive
+        for (var product in productList) {
+          final savedFavorite = favoritesBox.get(product.id.toString());
+          if (savedFavorite != null) {
+            product.inFavorites = savedFavorite; // استعادة حالة المنتج
+          }
+        }
+
         print("Fetched products: $productList");
-        emit(ProductsSuccessState(List.from(productList)));
+        emit(ProductsSuccessState());
       },
     );
   }
@@ -65,19 +65,39 @@ class ProductsCubit extends Cubit<ProductsState> {
     result.fold(
           (failure) {
         print("Error adding to favorites: ${failure.message}");
+
         emit(ProductsFailureState(errorMessage: failure.message));
-      },
+
+           },
           (updatedProduct) {
-        print("Product added to favorites: $updatedProduct");
 
-        // تحديث المنتج في القائمة المحلية
-        productList[index] = updatedProduct;
 
-        // إصدار حالة النجاح مع قائمة جديدة لضمان إعادة البناء
-        emit(ProductsSuccessState(List.from(productList)));
+              productList[index].inFavorites = !productList[index].inFavorites;
+
+              emit(updateFavoriteicon());
+
+        favoritesBox.put(productList[index].id.toString(), productList[index].inFavorites);
+
+
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return
+                    FavoriteDialog(
+                      onConfirm: () {
+                        Navigator.of(context).pop();},
+                      isAdded: productList[index].inFavorites,
+                    );
+                },
+              );
+
+
+
+        emit(ProductsSuccessState());
       },
     );
   }
+
 
 
 
@@ -93,7 +113,7 @@ class ProductsCubit extends Cubit<ProductsState> {
         cartsList[index] = updatedProduct;
 
         // إصدار حالة النجاح مع قائمة جديدة لضمان إعادة البناء
-        emit(ProductsSuccessState(List.from(cartsList)));
+        emit(ProductsSuccessState());
       },
     );
   }

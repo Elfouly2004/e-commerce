@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mrcandy/be.dart';
 import 'package:mrcandy/features/Greate_account/data/repo/Greate_account_impelemntation.dart';
 import 'package:mrcandy/features/login/data/repo/login_repo_impelemntation.dart';
 
@@ -19,6 +20,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox("setting");
+  await Hive.openBox('favorites');
+  await Hive.openBox('favorites-product');
   await ScreenUtil.ensureScreenSize();
 
   runApp(
@@ -62,7 +65,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Mr Candy',
-          home: const splashscreen(),
+          home:  splashscreen(),
           // Enable Device Preview integration
           builder: DevicePreview.appBuilder, // يجعل التطبيق يعمل ضمن Device Preview
         );

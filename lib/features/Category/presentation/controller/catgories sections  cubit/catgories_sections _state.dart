@@ -13,3 +13,5 @@ class CategoriesFailureState extends CatgoriesSectionsState {
   CategoriesFailureState({required this.errorMessage}) ;
 }
 class CategoriesSuccessState extends CatgoriesSectionsState { }
+class UpdateiconState extends CatgoriesSectionsState { }
+class UpdateiconSuccessState extends CatgoriesSectionsState { }

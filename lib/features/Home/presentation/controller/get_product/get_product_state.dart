@@ -17,18 +17,6 @@ class ProductsFailureState extends ProductsState {
   ProductsFailureState({required this.errorMessage});
 }
 
-class ProductsSuccessState extends ProductsState {
-  final List<ProductModel> productList;
+class ProductsSuccessState extends ProductsState {}
 
-  // اضف هنا ميزة Equatable لمقارنة الحقول المهمة فقط
-  ProductsSuccessState(this.productList);
-
-  @override
-  List<Object?> get props => [productList];
-}
-
-class AddFavoriteSuccessState extends ProductsState {
-  final ProductModel product;
-
-  AddFavoriteSuccessState(this.product);
-}
+class updateFavoriteicon extends ProductsState {}

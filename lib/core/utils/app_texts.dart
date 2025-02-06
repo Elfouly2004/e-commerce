@@ -25,5 +25,13 @@ class AppTexts {
   static const String price = "السعر";
   static const String discoundt = "الخصم";
   static const String profile = "profile";
+  static const String Account_setting = "Account Setting";
+  static const String App_setting = "App Setting";
+  static const String notifications = "Notifications";
+  static const String language = "Language";
+  static const String themes = "themes";
+  static const String add_done = "تمت الإضافة بنجاح";
+  static const String remove_done = "تم الحذف";
+  static const String ok = 'موافق';
 
 }

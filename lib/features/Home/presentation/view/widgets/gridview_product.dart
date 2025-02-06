@@ -26,10 +26,6 @@ class _ProductsGridState extends State<ProductsGrid> {
 
 
 
-
-
-
-
     double deviceHeight = MediaQuery.of(context).size.height;
     int contanierheight, contanierwidth ,imgheight ,
         imgwidth , container2 ,space, radius ,iconsize;
@@ -148,17 +144,17 @@ class _ProductsGridState extends State<ProductsGrid> {
         if (state is ProductsLoadingState) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProductsFailureState) {
+          print("Error: ${state.errorMessage}"); // Debug log
           return Center(child: Text('Error: ${state.errorMessage}'));
         } else if (state is ProductsSuccessState) {
-          final products = state.productList;
-
+          final products = context.read<ProductsCubit>().productList;
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             reverse: true,
-
             child: Wrap(
-              spacing: 20.0.w, // Horizontal spacing between items
-              runSpacing: 20.0.h, // Vertical spacing between rows
+              spacing: 20.0.w,
+              runSpacing: 20.0.h,
+              textDirection: TextDirection.rtl,
               children: List.generate(
                 products.length,
                     (index) {
@@ -185,11 +181,10 @@ class _ProductsGridState extends State<ProductsGrid> {
                                   height: imgheight.h,
                                   width: imgwidth.w,
                                   fit: BoxFit.fill,
-                                  // placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // مؤشر التحميل
-                                  errorWidget: (context, url, error) => const Icon(Icons.broken_image), // في حالة فشل تحميل الصورة
+                                  errorWidget: (context, url, error) =>
+                                  const Icon(Icons.broken_image),
                                 ),
                               ),
-
                             ),
                             Text(
                               product.name.split(" ").join(" "),
@@ -201,16 +196,14 @@ class _ProductsGridState extends State<ProductsGrid> {
                               maxLines: 1,
                               textAlign: TextAlign.end,
                             ),
-
-
-                          SizedBox(height: 8.h,),
-
+                            SizedBox(height: 8.h),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    BlocProvider.of<ProductsCubit>(context).addCart(context, index);
+                                    BlocProvider.of<ProductsCubit>(context)
+                                        .addCart(context, index);
                                   },
                                   child: Container(
                                     height: 25.h,
@@ -228,7 +221,6 @@ class _ProductsGridState extends State<ProductsGrid> {
                                     ),
                                   ),
                                 ),
-
                                 Text(
                                   "  ${product.price}  جنيه",
                                   textDirection: TextDirection.rtl,
@@ -239,26 +231,20 @@ class _ProductsGridState extends State<ProductsGrid> {
                                   ),
                                 ),
                               ],
-
-
-
-
                             ),
                           ],
                         ),
                       ),
                       Positioned(
                         top: 5.h,
-                        left: 5.w,
-
-                        child:Row(
+                        right: 5.w, // تعديل الاتجاه ليكون من اليمين
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-
                             Container(
                               padding: EdgeInsets.all(5.w),
-                              height:container2.h ,
+                              height: container2.h,
                               width: container2.w,
                               decoration: BoxDecoration(
                                 color: AppColors.title,
@@ -274,22 +260,19 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-
-                            SizedBox(width: space.w,),
-
+                            SizedBox(width: space.w),
                             GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  BlocProvider.of<ProductsCubit>(context).addFavorite(context, index);
-                                  BlocProvider.of<ProductsCubit>(context).productList[index].inFavorites =
-                                  !BlocProvider.of<ProductsCubit>(context).productList[index].inFavorites;
-                                });
+                                BlocProvider.of<ProductsCubit>(context).addFavorite(context, index);
+                                // BlocProvider.of<ProductsCubit>(context).updateicon(context, index);
                               },
                               child: CircleAvatar(
                                 radius: radius.r,
                                 backgroundColor: AppColors.white,
                                 child: Icon(
-                                  BlocProvider.of<ProductsCubit>(context).productList[index].inFavorites
+                                  BlocProvider.of<ProductsCubit>(context)
+                                      .productList[index]
+                                      .inFavorites
                                       ? Icons.favorite
                                       : Icons.favorite_border,
                                   color: AppColors.defaultcolor,
@@ -297,11 +280,8 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 ),
                               ),
                             ),
-
-
                           ],
-                        )
-
+                        ),
                       ),
                     ],
                   );
@@ -309,10 +289,12 @@ class _ProductsGridState extends State<ProductsGrid> {
               ),
             ),
           );
+
         } else {
           return const Center(child: Text('No data found'));
         }
       },
     );
+
   }
 }

@@ -14,11 +14,15 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = FavoritesCubit.get(context);
+
+
+    cubit.fetchFavorites();
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Column(
         children: [
-          // Custom Appbar as a widget
           SizedBox(
             height: 111.h, // نفس ارتفاع الـ AppBar
             child: const CustomAppbar(title: AppTexts.Fav),
@@ -55,7 +59,6 @@ class FavoritesPage extends StatelessWidget {
 
                             return Stack(
                               children: [
-                                // Background Container
                                 Container(
                                   height: 160.h,
                                   decoration: BoxDecoration(
@@ -65,7 +68,6 @@ class FavoritesPage extends StatelessWidget {
                                   ),
                                   child: Row(
                                     children: [
-                                      // Product Image
                                       Container(
                                         width: screenWidth * 0.3,
                                         decoration: const BoxDecoration(
@@ -84,27 +86,22 @@ class FavoritesPage extends StatelessWidget {
                                             height: 120.h,
                                             width: 100.w,
                                             fit: BoxFit.fitHeight,
-                                            // placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // مؤشر تحميل
-                                            errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50, color: Colors.red), // أيقونة خطأ
+                                            errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50, color: Colors.red),
                                           ),
                                         ),
                                       ),
-                                      // Product Details
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end, // لمحاذاة النصوص إلى اليمين
+                                            crossAxisAlignment: CrossAxisAlignment.end,
                                             children: [
                                               Column(
                                                 mainAxisAlignment: MainAxisAlignment.start,
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 children: [
-
                                                   GestureDetector(
                                                     onTap: () {
-                                                      // BlocProvider.of<FavoritesCubit>(context)
-                                                      //     .toggleFavorite(index);
                                                     },
                                                     child: CircleAvatar(
                                                       radius: 20.r,
@@ -115,8 +112,6 @@ class FavoritesPage extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
-
-
                                                   Text(
                                                     product.name.split(",").join(""),
                                                     maxLines: 1,
@@ -127,28 +122,23 @@ class FavoritesPage extends StatelessWidget {
                                                     ),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
-
-
                                                 ],
                                               ),
                                               const Spacer(),
-                                              // Product Price
                                               Text(
                                                 "${product.price} جنيه",
-                                                textDirection: TextDirection.rtl, // لتجنب المشكلات مع النصوص العربية
+                                                textDirection: TextDirection.rtl,
                                                 style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w700,
                                                   color: AppColors.defaultcolor,
                                                 ),
                                               ),
-
                                               const SizedBox(height: 0),
-                                              // Product Discount
                                               if (product.discount > 0)
                                                 Text(
                                                   " % خصم: ${product.discount}",
-                                                  style:  TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 12.sp,
                                                     fontWeight: FontWeight.w800,
                                                     color: Colors.red,
@@ -161,25 +151,6 @@ class FavoritesPage extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                // Favorite Button
-                                // Positioned(
-                                //   top: 10,
-                                //   right: 10,
-                                //   child: GestureDetector(
-                                //     onTap: () {
-                                //       // BlocProvider.of<FavoritesCubit>(context)
-                                //       //     .toggleFavorite(index); // Assuming a method for toggling favorite
-                                //     },
-                                //     child: CircleAvatar(
-                                //       radius: 20.r,
-                                //       backgroundColor: AppColors.white,
-                                //       child: Icon(
-                                //         product.inFavorites ? Icons.favorite : Icons.favorite_border,
-                                //         color: AppColors.defaultcolor,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             );
                           },
