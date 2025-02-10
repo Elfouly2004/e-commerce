@@ -9,16 +9,22 @@ import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../controller/fav_cubit.dart';
 import '../controller/fav_state.dart';
 
-class FavoritesPage extends StatelessWidget {
+class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
 
   @override
+  State<FavoritesPage> createState() => _FavoritesPageState();
+}
+
+class _FavoritesPageState extends State<FavoritesPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<FavoritesCubit>().fetchFavorites();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final cubit = FavoritesCubit.get(context);
-
-
-    cubit.fetchFavorites();
-
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Column(
@@ -46,117 +52,130 @@ class FavoritesPage extends StatelessWidget {
                     return const Center(child: Text("No Favorites Found"));
                   }
 
-                  return ListView.builder(
-                    itemCount: favorites.length,
-                    padding: const EdgeInsets.all(10.0),
-                    itemBuilder: (context, index) {
-                      final product = favorites[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final screenWidth = constraints.maxWidth;
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await context.read<FavoritesCubit>().fetchFavorites();
+                    },
+                    child: ListView.builder(
+                      itemCount: favorites.length,
+                      padding: const EdgeInsets.all(10.0),
+                      itemBuilder: (context, index) {
+                        final product = favorites[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              final screenWidth = constraints.maxWidth;
 
-                            return Stack(
-                              children: [
-                                Container(
-                                  height: 160.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: AppColors.Appbar2),
-                                    color: AppColors.gridproduct,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: screenWidth * 0.3,
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            bottomLeft: Radius.circular(15),
+                              return Stack(
+                                children: [
+                                  Container(
+                                    height: 160.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(color: AppColors.Appbar2),
+                                      color: AppColors.gridproduct,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: screenWidth * 0.3,
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              bottomLeft: Radius.circular(15),
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              bottomLeft: Radius.circular(15),
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: product.product.image,
+                                              height: 120.h,
+                                              width: 100.w,
+                                              fit: BoxFit.fitHeight,
+                                              errorWidget: (context, url, error) =>
+                                              const Icon(Icons.broken_image, size: 50, color: Colors.red),
+                                            ),
                                           ),
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            bottomLeft: Radius.circular(15),
-                                          ),
-                                          child: CachedNetworkImage(
-                                            imageUrl: product.image,
-                                            height: 120.h,
-                                            width: 100.w,
-                                            fit: BoxFit.fitHeight,
-                                            errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50, color: Colors.red),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                    },
-                                                    child: CircleAvatar(
-                                                      radius: 20.r,
-                                                      backgroundColor: AppColors.white,
-                                                      child: Icon(
-                                                        product.inFavorites ? Icons.favorite : Icons.favorite_border,
-                                                        color: AppColors.defaultcolor,
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        context.read<FavoritesCubit>().deletefav(context, index);
+                                                      },
+                                                      child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                                                        builder: (context, state) {
+                                                          final isLoading = context.read<FavoritesCubit>().loadingIndex == index;
+                                                          return CircleAvatar(
+                                                            radius: 20.r,
+                                                            backgroundColor: AppColors.white,
+                                                            child: isLoading
+                                                                ? const CircularProgressIndicator() // ⏳ أثناء الحذف
+                                                                : const Icon(Icons.delete, color: Colors.red), // 🗑️ زر الحذف العادي
+                                                          );
+                                                        },
                                                       ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    product.name.split(",").join(""),
-                                                    maxLines: 1,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.black,
+
+
+                                                    Text(
+                                                      product.product.name.split(",").join(""),
+                                                      maxLines: 1,
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ],
-                                              ),
-                                              const Spacer(),
-                                              Text(
-                                                "${product.price} جنيه",
-                                                textDirection: TextDirection.rtl,
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: AppColors.defaultcolor,
+                                                  ],
                                                 ),
-                                              ),
-                                              const SizedBox(height: 0),
-                                              if (product.discount > 0)
+                                                const Spacer(),
                                                 Text(
-                                                  " % خصم: ${product.discount}",
+                                                  "${product.product.price} جنيه",
+                                                  textDirection: TextDirection.rtl,
                                                   style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: Colors.red,
+                                                    fontSize: 16.sp,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.defaultcolor,
                                                   ),
                                                 ),
-                                            ],
+                                                const SizedBox(height: 0),
+                                                if (product.product.discount > 0)
+                                                  Text(
+                                                    " % خصم: ${product.product.discount}",
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight: FontWeight.w800,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    },
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   );
                 }
                 return const Center(child: Text("Something went wrong!"));

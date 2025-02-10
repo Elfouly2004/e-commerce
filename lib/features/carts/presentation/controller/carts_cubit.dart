@@ -9,7 +9,7 @@ class CartsCubit extends Cubit<CartsState> {
 
   final CartsRepoImplmentation cartRepo = CartsRepoImplmentation();
   List<CartItemModel> cartsList = [];
-int totalprice=0;
+    int totalprice=0;
   static CartsCubit get(context) => BlocProvider.of(context);
 
   Future<void> fetchCarts() async {
@@ -33,7 +33,6 @@ int totalprice=0;
 
 
   Future<void> deleteCart(context, int index) async {
-    emit(CartsLoadingState());
 
     final result = await cartRepo.DeleteCarts(context: context, index: index);
 

@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:mrcandy/features/favorite/data/model/fav_model.dart';
 
 import '../../../Home/data/model/product_model.dart';
 
@@ -13,7 +14,7 @@ class FavoritesInitialState extends FavoritesState {}
 class FavoritesLoadingState extends FavoritesState {}
 
 class FavoritesSuccessState extends FavoritesState {
-  final List<ProductModel> favorites;
+  final List<FavItemModel> favorites;
   FavoritesSuccessState(this.favorites);
 }
 

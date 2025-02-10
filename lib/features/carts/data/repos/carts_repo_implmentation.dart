@@ -64,11 +64,7 @@ int totalprice=0;
 
 
   @override
-  Future<Either<Failure, List<CartItemModel>>> updateCarts(
-      {
-        required int IDcart,
-        required int quantity,
-      }) async {
+  Future<Either<Failure, List<CartItemModel>>> updateCarts({required int IDcart, required int quantity,}) async {
     List<CartItemModel> cartsList = [];
     final token = Hive.box("setting").get("token");
 

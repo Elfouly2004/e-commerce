@@ -7,6 +7,7 @@ import 'package:mrcandy/be.dart';
 import 'package:mrcandy/features/Greate_account/data/repo/Greate_account_impelemntation.dart';
 import 'package:mrcandy/features/login/data/repo/login_repo_impelemntation.dart';
 
+import 'cubit_mrcandy.dart';
 import 'features/Greate_account/presentation/controller/greate_account_cubit.dart';
 import 'features/Home/presentation/controller/get_banners/get_banners_cubit.dart';
 import 'features/Home/presentation/controller/get_categories/get_categories_cubit.dart';
@@ -23,6 +24,7 @@ void main() async {
   await Hive.openBox('favorites');
   await Hive.openBox('favorites-product');
   await ScreenUtil.ensureScreenSize();
+  Bloc.observer = MyBlocObserver();
 
   runApp(
     MultiBlocProvider(
@@ -31,13 +33,13 @@ void main() async {
 
         BlocProvider(create: (_)=> BannersCubit()..fetchBanners()),
 
-
         BlocProvider( create: (_) => CategoriesCubit()..fetchCategories(),),
 
         BlocProvider(  create: (context) => FavoritesCubit()..fetchFavorites(),),
 
         BlocProvider(  create: (context) => CartsCubit()..fetchCarts(),),
-        BlocProvider(  create: (context) => CartsCubit()..fetchCarts(),),
+
+        // BlocProvider(  create: (context) => CartsCubit()..fetchCarts(),),
 
         BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(LoginRepoImplementation()),

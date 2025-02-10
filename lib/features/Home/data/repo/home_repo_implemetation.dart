@@ -20,7 +20,6 @@ class HomeRepoImplementation implements HomeRepo {
   List<ProductModel> productList = [];
 
 
-
   @override
   Future<Either<Failure, List<BannersModel>>> get_banners() async {
     List<BannersModel> banners = [];
@@ -110,7 +109,6 @@ class HomeRepoImplementation implements HomeRepo {
   }
 
 
-
   @override
   Future<Either<Failure, List<ProductModel>>> get_Gatgories({id}) async {
     try {
@@ -191,48 +189,6 @@ print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[in
     }
   }
 
-  @override
-  Future<Either<Failure, List<ProductModel>>> getfav() async {
-    List<ProductModel> favlist = [];
-    final token = Hive.box("setting").get("token");
-
-    try {
-      final response = await http.get(
-        Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
-        headers: {
-          "Authorization": "$token",
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final body = jsonDecode(response.body);
-
-        print('Response data: ${body["data"]}');
-
-        if (body["status"] == true) {
-          favlist = [];
-          for (var favoriteItem in body["data"]["data"]) {
-            try {
-              final productJson = favoriteItem["product"];
-              favlist.add(ProductModel.fromJson(productJson));
-            } catch (e) {
-              print("Error processing product: $e");
-            }
-          }
-          return right(favlist);
-        } else {
-          return left(ApiFailure(message: body["message"] ?? "Unknown error"));
-        }
-      } else {
-        return left(ApiFailure(message: "Failed to fetch data, Status code: ${response.statusCode}"));
-      }
-    } on SocketException {
-      return left(NoInternetFailure(message: "No Internet"));
-    } catch (e) {
-      print('Error occurred: $e'); // Print the error for debugging
-      return left(ApiFailure(message: "Error Occurred"));
-    }
-  }
 
 
 

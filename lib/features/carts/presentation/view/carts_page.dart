@@ -10,8 +10,18 @@ import '../controller/carts_cubit.dart';
 import '../controller/carts_state.dart';
 import 'lstview.dart';
 
-class CartsPage extends StatelessWidget {
+class CartsPage extends StatefulWidget {
   const CartsPage({super.key});
+
+  @override
+  State<CartsPage> createState() => _CartsPageState();
+}
+
+class _CartsPageState extends State<CartsPage> {
+  void initState() {
+    super.initState();
+    context.read<CartsCubit>().fetchCarts();
+  }
 
   @override
   Widget build(BuildContext context) {

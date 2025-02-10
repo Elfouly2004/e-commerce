@@ -24,7 +24,6 @@ abstract class HomeRepo {
   Future<Either<Failure, ProductModel>> Addfav();
 
 
-  Future<Either<Failure, List<ProductModel>>> getfav();
 
 
   Future<Either<Failure, CartItemModel>> Add_carts();
