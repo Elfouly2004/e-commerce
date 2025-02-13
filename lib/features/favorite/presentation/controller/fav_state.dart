@@ -22,3 +22,5 @@ class FavoritesFailureState extends FavoritesState {
   final String errorMessage;
   FavoritesFailureState(this.errorMessage);
 }
+
+class NoInternetState extends FavoritesState {}

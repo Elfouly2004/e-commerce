@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../data/model/product_model.dart';
 
 abstract class ProductsState extends Equatable{
   @override
@@ -20,3 +19,6 @@ class ProductsFailureState extends ProductsState {
 class ProductsSuccessState extends ProductsState {}
 
 class updateFavoriteicon extends ProductsState {}
+
+
+class NoInternetStates extends ProductsState {}

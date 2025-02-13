@@ -19,7 +19,7 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SettingCubit()..loadSettings(), // تحميل البيانات عند الإنشاء
+      create: (context) => SettingCubit()..loadSettings(context), // تحميل البيانات عند الإنشاء
       child: Scaffold(
         body: Column(
           children: [

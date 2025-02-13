@@ -75,8 +75,7 @@ class CatgoriesSectionsCubit extends Cubit<CatgoriesSectionsState> {
           builder: (context) {
             return
               FavoriteDialog(
-                onConfirm: () {
-                  Navigator.of(context).pop();},
+
                 isAdded: categoriesdeatials_lst[index].inFavorites,
               );
           },

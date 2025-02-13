@@ -21,3 +21,5 @@ class CartsFailureState extends CartsState {
   final String errorMessage;
   CartsFailureState(this.errorMessage);
 }
+
+class cart_nointernetStates extends CartsState {}

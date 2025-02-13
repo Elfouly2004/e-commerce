@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mrcandy/core/utils/app_texts.dart';
 
-class FavoriteDialog extends StatelessWidget {
+class FavoriteDialog extends StatefulWidget {
   final bool isAdded;
-  final VoidCallback onConfirm;
 
   const FavoriteDialog({
     Key? key,
     required this.isAdded,
-    required this.onConfirm,
   }) : super(key: key);
+
+  @override
+  _FavoriteDialogState createState() => _FavoriteDialogState();
+}
+
+class _FavoriteDialogState extends State<FavoriteDialog> {
+  double opacity = 0.0; // تبدأ الأنيميشن شفافة
+
+  @override
+  void initState() {
+    super.initState();
+
+    // تأخير ظهور الأنيميشن
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (mounted) {
+        setState(() {
+          opacity = 1.0;
+        });
+      }
+    });
+
+    // إغلاق النافذة بعد 1.5 ثانية
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +44,23 @@ class FavoriteDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      title: Row(
+      content: Column(
+        mainAxisSize: MainAxisSize.min, // يجعل العمود بحجم المحتوى فقط
         children: [
-          Icon(
-            isAdded ? Icons.check_circle : Icons.remove_circle,
-            color: isAdded ? Colors.green : Colors.red,
-            size: 30,
+          AnimatedOpacity(
+            opacity: opacity,
+            duration: const Duration(milliseconds: 800),
+            child: Lottie.asset(
+              widget.isAdded
+                  ? 'assets/animations/Animation - 1739281684788.json' // عند الإضافة
+                  : 'assets/animations/Animation - 1739281299669.json', // عند الحذف
+              height: 150,
+              width: 150,
+            ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(height: 20), // مسافة بين الأنيميشن والنص
           Text(
-            isAdded ?  AppTexts.add_done:AppTexts.remove_done ,
+            widget.isAdded ? AppTexts.add_done : AppTexts.remove_done,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -35,15 +69,6 @@ class FavoriteDialog extends StatelessWidget {
           ),
         ],
       ),
-      actions: [
-        TextButton(
-          onPressed: onConfirm,
-          child: const Text(
-            AppTexts.ok,
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -6,6 +6,8 @@ import 'package:mrcandy/core/utils/app_texts.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
+import '../../../../core/shared_widgets/custom_lottie.dart';
+import '../../../Home/presentation/controller/get_product/get_product_state.dart';
 import '../controller/fav_cubit.dart';
 import '../controller/fav_state.dart';
 
@@ -33,19 +35,30 @@ class _FavoritesPageState extends State<FavoritesPage> {
             height: 111.h, // نفس ارتفاع الـ AppBar
             child: const CustomAppbar(title: AppTexts.Fav),
           ),
+
+
           Expanded(
             child: BlocBuilder<FavoritesCubit, FavoritesState>(
               builder: (context, state) {
                 if (state is FavoritesLoadingState) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is FavoritesFailureState) {
+                }
+                else if (state is FavoritesFailureState) {
                   return Center(
                     child: Text(
                       state.errorMessage,
                       style: const TextStyle(color: Colors.red),
                     ),
                   );
-                } else if (state is FavoritesSuccessState) {
+                }
+                else if (state is NoInternetState) {
+                  return NoInternetWidget(
+                    onRetry: () {
+                      context.read<FavoritesCubit>().fetchFavorites();
+                    },
+                  );
+                }
+                else if (state is FavoritesSuccessState) {
                   final favorites = state.favorites;
 
                   if (favorites.isEmpty) {

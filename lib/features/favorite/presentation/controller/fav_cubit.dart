@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/errors/failure.dart';
 import '../../data/model/fav_model.dart';
 import '../../data/repo/fav_repo_implemntation.dart';
 import 'fav_state.dart';
@@ -20,8 +21,15 @@ class FavoritesCubit extends Cubit<FavoritesState> {
 
     result.fold(
           (failure) {
-        print("Error fetching favorites: ${failure.message}");
-        emit(FavoritesFailureState(failure.message));
+
+
+            if (failure is NoInternetFailure) {
+              emit(NoInternetState());
+            }else{
+              print("Error fetching favorites: ${failure.message}");
+              emit(FavoritesFailureState(failure.message));
+            }
+
       },
           (data) {
         favoritesList = List.from(data);

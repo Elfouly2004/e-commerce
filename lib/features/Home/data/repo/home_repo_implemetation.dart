@@ -40,8 +40,6 @@ class HomeRepoImplementation implements HomeRepo {
       } else {
         return left(ApiFailure(message: body["message"]));
       }
-    } on SocketException {
-      return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
       print('Error occurred: $e');  // Print the error
       return left(ApiFailure(message: "Error Occurred"));

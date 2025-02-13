@@ -21,24 +21,29 @@ class HomeScreen extends StatelessWidget {
       height =280;
 
 
-    } else if (deviceHeight > 1340) {
+    }
+    else if (deviceHeight > 1340) {
 
       height =210;
 
-    } else  if (deviceHeight > 1000) {
+    }
+    else  if (deviceHeight > 1000) {
 
        height =210;
 
 
-    }else if (deviceHeight > 850) {
+    }
+    else if (deviceHeight > 850) {
 
       height = 140;
 
-    }else if(deviceHeight >= 800){
+    }
+    else if(deviceHeight >= 800){
 
       height = 120;
 
-    }else if (deviceHeight > 750) {
+    }
+    else if (deviceHeight > 750) {
 
       height = 120;
 

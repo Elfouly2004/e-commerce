@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mrcandy/features/carts/data/repos/carts_repo_implmentation.dart';
 
+import '../../../../core/errors/failure.dart';
 import '../../data/model/cart_model.dart';
 import 'carts_state.dart';
 
@@ -18,8 +19,14 @@ class CartsCubit extends Cubit<CartsState> {
 
     result.fold(
           (failure) {
-        print("Error fetching carts: ${failure.message}");
-        emit(CartsFailureState(failure.message));
+
+            if (failure is NoInternetFailure) {
+              emit(cart_nointernetStates());
+            }else{
+              print("Error fetching carts: ${failure.message}");
+              emit(CartsFailureState(failure.message));
+            }
+
       },
           (data) {
         cartsList = data;
@@ -41,6 +48,8 @@ class CartsCubit extends Cubit<CartsState> {
         emit(CartsFailureState(failure.message));
       },
           (_) {
+           emit(CartsLoadingState()) ;
+
         // حذف العنصر من القائمة
         cartsList.removeAt(index);
 

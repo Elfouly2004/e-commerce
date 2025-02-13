@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/utils/app_texts.dart';
+import '../../../profile/presetation/view/profile_page.dart';
 import '../../data/model/setting_item_model.dart';
 
 part 'setting_state.dart';
@@ -12,12 +13,14 @@ class SettingCubit extends Cubit<SettingState> {
   SettingCubit() : super(SettingInitial());
 
 
-  void loadSettings() {
+  void loadSettings(context) {
     final List<SettingItemModel> accountSettings = [
       SettingItemModel(
         title: AppTexts.profile,
         leadingIcon: CupertinoIcons.profile_circled,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),));
+        },
       ),
       SettingItemModel(
         title: "Change Password",
