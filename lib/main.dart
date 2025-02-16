@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mrcandy/be.dart';
 import 'package:mrcandy/features/Greate_account/data/repo/Greate_account_impelemntation.dart';
 import 'package:mrcandy/features/login/data/repo/login_repo_impelemntation.dart';
-
 import 'cubit_mrcandy.dart';
 import 'features/Greate_account/presentation/controller/greate_account_cubit.dart';
 import 'features/Home/presentation/controller/get_banners/get_banners_cubit.dart';

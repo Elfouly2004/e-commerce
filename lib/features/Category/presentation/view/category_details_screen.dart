@@ -8,69 +8,109 @@ import '../../../../core/shared_widgets/custom_button.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_texts.dart';
 
-class CategoryDetailsScreen extends StatelessWidget {
+class CategoryDetailsScreen extends StatefulWidget {
   final ProductModel product;
 
   const CategoryDetailsScreen({super.key, required this.product});
 
   @override
+  _CategoryDetailsScreenState createState() => _CategoryDetailsScreenState();
+}
+
+class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
+  int selectedImageIndex = 0;
+  PageController pageController = PageController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100.h), // ارتفاع الـ AppBar
+        preferredSize: Size.fromHeight(100.h),
         child: CustomAppbar(
           title: "تفاصيل المنتج",
-          leading: IconButton(onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back_ios_new_rounded,
-                color: AppColors.white,size: 30.r,)),
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: AppColors.white,
+              size: 30.r,
+            ),
+          ),
         ),
       ),
+      backgroundColor: AppColors.white,
 
-       backgroundColor: AppColors.white,
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
 
-
-
-
-
-           const SizedBox(height: 20,),
+            const SizedBox(height: 20),
 
             Center(
-              child: SizedBox(
-                height: 200.h, // ارتفاع الصور
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal, // لتكون الحركة أفقية
-                  itemCount: product.images.length, // عدد الصور في القائمة
+              child: Container(
+                height: 200.h,
+                width: 300.w,
+                decoration: BoxDecoration(),
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: widget.product.images.length,
+                  onPageChanged: (index) {
+                    setState(() {
+                      selectedImageIndex = index;
+                    });
+                  },
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w), // مسافة بين الصور
-                      child: Container(
-                        height:150.h ,
-                        width: 250.w,
-                        decoration: const BoxDecoration(
-
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: product.images[index], // رابط الصورة
-                          fit: BoxFit.fill,
-                          // placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // مؤشر التحميل
-                          errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50), // في حالة فشل تحميل الصورة
-                        )
-
-                      ),
+                    return CachedNetworkImage(
+                      imageUrl: widget.product.images[index],
+                      fit: BoxFit.fill,
+                      errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 50),
                     );
                   },
                 ),
               ),
             ),
 
+            const SizedBox(height: 20),
 
-
+            SizedBox(
+              height: 80.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.product.images.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedImageIndex = index;
+                        pageController.jumpToPage(index);
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Container(
+                        width: 90.w,
+                        height: 80.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(
+                            color: selectedImageIndex == index ? AppColors.Appbar3 : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.product.images[index],
+                          fit: BoxFit.fitHeight,
+                          errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 30),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
 
             const SizedBox(height: 20),
 
@@ -80,69 +120,52 @@ class CategoryDetailsScreen extends StatelessWidget {
             ),
 
             CystomTxt(
-              data:product.name ,
-              fontSize:18,
+              data: widget.product.name,
+              fontSize: 18,
               color: Colors.black,
-
             ),
-
-
 
             const SizedBox(height: 20),
 
             CystomTxt(
-              data:"${AppTexts.price} : ${product.price}  جنيه ",
-              fontSize:18,
+              data: "${AppTexts.price} : ${widget.product.price}  جنيه ",
+              fontSize: 18,
               color: Colors.green,
-
             ),
-
-
 
             const SizedBox(height: 10),
 
-
-
             CystomTxt(
-              data:"${AppTexts.discoundt} : ${product.discount}  % ",
-              fontSize:15,
+              data: "${AppTexts.discoundt} : ${widget.product.discount}  % ",
+              fontSize: 15,
               color: Colors.red,
-
             ),
-
 
             const SizedBox(height: 10),
 
             Text(
-              product.description.split(".")[0], // يقطع النص عند أول نقطة
+              widget.product.description.split(".")[0],
               textDirection: TextDirection.rtl,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
-              maxLines: 7, // تحديد الحد الأقصى لعدد الأسطر
+              maxLines: 5,
               overflow: TextOverflow.ellipsis,
             ),
 
             const SizedBox(height: 10),
 
-
             const Spacer(),
 
             Center(
               child: CustomButton(
-                onTap: () {
-
-              },
+                onTap: () {},
                 text: AppTexts.Addcart,
-
-
               ),
             ),
 
-
-           const SizedBox(height: 30,)
-
+            const SizedBox(height: 30),
           ],
         ),
       ),

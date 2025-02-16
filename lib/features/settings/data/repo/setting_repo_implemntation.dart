@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:mrcandy/core/errors/failure.dart';
 import 'package:mrcandy/core/token/token.dart';
 import 'package:mrcandy/features/profile/data/model/profile_model.dart';
-import 'package:mrcandy/features/profile/data/repo/profile_repo.dart';
+import 'package:mrcandy/features/settings/data/repo/setting_repo.dart';
 import '../../../../core/utils/endpoints.dart';
 import 'package:http/http.dart' as http;
 
-class ProfileRepoImplementation implements ProfileRepo {
+class SettingRepoImplemntation implements SettingRepo {
   @override
   Future<Either<Failure, ProfileModel>> getprofile() async {
     try {

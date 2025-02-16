@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mrcandy/features/profile/data/repo/profile_repo.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/profile_avatar.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/profile_list_tile.dart';
+import 'package:mrcandy/features/settings/data/repo/setting_repo_implemntation.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../../core/shared_widgets/custom_button.dart';
 import '../../../../core/utils/app_colors.dart';
@@ -15,7 +16,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileCubit(profileRepo: ProfileRepoImplementation())..fetchProfile(),
+      create: (context) => ProfileCubit(settingRepo: SettingRepoImplemntation())..fetchProfile(),
       child: Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(100.h),

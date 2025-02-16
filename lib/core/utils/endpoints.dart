@@ -11,5 +11,6 @@ class EndPoints{
   static const String Token ="sTflFvKcdSiLpD92R6j6br2yFQGJPKhWQVO5a2apBPiIps6lr7exG9j8Zqp1UfFnpCpmuf";
   static const String carts ="carts";
   static const String profile ="profile";
+  static const String updateprofile ="update-profile";
 
 }
