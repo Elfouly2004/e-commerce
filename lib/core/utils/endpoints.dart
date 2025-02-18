@@ -12,5 +12,8 @@ class EndPoints{
   static const String carts ="carts";
   static const String profile ="profile";
   static const String updateprofile ="update-profile";
+  static const String changepassword ="change-password";
+  static const String reset_password ="reset-password";
 
 }
+

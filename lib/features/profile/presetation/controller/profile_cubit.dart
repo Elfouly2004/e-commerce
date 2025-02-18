@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:mrcandy/core/errors/failure.dart';
 import 'package:mrcandy/features/profile/data/model/profile_model.dart';
-import 'package:mrcandy/features/profile/data/repo/profile_repo.dart';
 import 'package:mrcandy/features/settings/data/repo/setting_repo.dart';
 
 part 'profile_state.dart';

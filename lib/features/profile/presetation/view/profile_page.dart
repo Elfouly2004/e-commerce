@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mrcandy/features/profile/data/repo/profile_repo.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/profile_avatar.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/profile_list_tile.dart';
 import 'package:mrcandy/features/settings/data/repo/setting_repo_implemntation.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../../core/shared_widgets/custom_button.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../data/repo/profile-repo_implementation.dart';
 import '../controller/profile_cubit.dart';
 
 

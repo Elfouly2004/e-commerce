@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../core/utils/app_texts.dart';
+import '../../../change_pass/presentation/view/changepass_screen.dart';
 import '../../../profile/presetation/view/profile_page.dart';
 import '../../data/model/setting_item_model.dart';
 
@@ -25,7 +26,10 @@ class SettingCubit extends Cubit<SettingState> {
       SettingItemModel(
         title: "Change Password",
         leadingIcon: Icons.lock_outline,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen(),));
+
+        },
       ),
       SettingItemModel(
         title: "Privacy Settings",
