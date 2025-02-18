@@ -135,8 +135,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                             radius: 20.r,
                                                             backgroundColor: AppColors.white,
                                                             child: isLoading
-                                                                ? const CircularProgressIndicator() // ⏳ أثناء الحذف
-                                                                : const Icon(Icons.delete, color: Colors.red), // 🗑️ زر الحذف العادي
+                                                                ? const CircularProgressIndicator()
+                                                                : const Icon(Icons.delete, color: Colors.red),
                                                           );
                                                         },
                                                       ),
@@ -200,3 +200,5 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 }
+
+

@@ -9,7 +9,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   final HomeRepoImplementation homeRepo = HomeRepoImplementation();
   List<CategoriesModel> categories_lst = [];
 
-  // Static method for accessing the cubit instance easily
+
   static CategoriesCubit get(context) => BlocProvider.of(context);
 
   Future<void> fetchCategories() async {
@@ -20,7 +20,7 @@ class CategoriesCubit extends Cubit<CategoriesState> {
       print("Error fetching categories: ${failure.message}");
       emit(CategoriesFailureState(errorMessage: failure.message));
     }, (data) {
-      if (data.isNotEmpty) {  // ✅ التحقق من البيانات قبل التحديث
+      if (data.isNotEmpty) {
         categories_lst = data;
         print("Fetched categories: $categories_lst");
         emit(CategoriesSuccessState());

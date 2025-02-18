@@ -29,21 +29,20 @@ class ProductModel  extends Equatable{
 
   );
 
-  // Factory constructor to create a new Product instance from JSON
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'] is int ? json['id'] : (json['id'] as double?)?.toInt() ?? 0, // Default to 0 if null
-      price: json['price'] is int ? json['price'] : (json['price'] as double?)?.toInt() ?? 0, // Default to 0 if null
-      oldPrice: json['old_price'] is int ? json['old_price'] : (json['old_price'] as double?)?.toInt() ?? 0, // Default to 0 if null
-      discount: json['discount'] is int ? json['discount'] : (json['discount'] as double?)?.toInt() ?? 0, // Default to 0 if null
-      image: json['image'] ?? '', // Default to empty string if null
-      name: json['name'] ?? '', // Default to empty string if null
-      description: json['description'] ?? '', // Default to empty string if null
+      id: json['id'] is int ? json['id'] : (json['id'] as double?)?.toInt() ?? 0,
+      price: json['price'] is int ? json['price'] : (json['price'] as double?)?.toInt() ?? 0,
+      oldPrice: json['old_price'] is int ? json['old_price'] : (json['old_price'] as double?)?.toInt() ?? 0,
+      discount: json['discount'] is int ? json['discount'] : (json['discount'] as double?)?.toInt() ?? 0,
+      image: json['image'] ?? '',
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
       images: json['images'] != null && json['images'] is List
           ? List<String>.from(json['images'])
-          : [], // Default to empty list if null or not a list
-      inFavorites: json['in_favorites'] ?? false, // Default to false if null
-      inCart: json['in_cart'] ?? false, // Default to false if null
+          : [],
+      inFavorites: json['in_favorites'] ?? false,
+      inCart: json['in_cart'] ?? false,
     );
   }
 

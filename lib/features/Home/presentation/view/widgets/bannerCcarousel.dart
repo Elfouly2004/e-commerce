@@ -110,10 +110,10 @@ class _BannerCarouselState extends State<BannerCarousel> {
                           color: Colors.black12,
                         ),
                         child: CachedNetworkImage(
-                          imageUrl: banner.urlImage, // رابط الصورة
+                          imageUrl: banner.urlImage,
                           fit: BoxFit.fill,
                           // placeholder: (context, url) => const Center(child: CircularProgressIndicator()), // مؤشر التحميل
-                          errorWidget: (context, url, error) => const Icon(Icons.broken_image), // في حالة فشل تحميل الصورة
+                          errorWidget: (context, url, error) => const Icon(Icons.broken_image),
                         ),
                       );
 

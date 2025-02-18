@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 class BannersModel extends Equatable {
   final String urlImage;
   final int id;
-  final Map<String, dynamic>? category; // Update to handle category
+  final Map<String, dynamic>? category;
   final String? product;
 
   BannersModel({
     required this.urlImage,
     required this.id,
-    this.category, // Nullable category
-    this.product, // Nullable product
+    this.category,
+    this.product,
   });
 
 

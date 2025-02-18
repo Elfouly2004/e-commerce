@@ -97,7 +97,7 @@ class HomePage extends StatelessWidget {
               context.read<BannersCubit>().fetchBanners();
               context.read<CategoriesCubit>().fetchCategories();
             },
-          );  // عرض ودجت عدم الاتصال
+          );
         }
 
       return  HomeScreen(

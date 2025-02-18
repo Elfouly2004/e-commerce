@@ -68,8 +68,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Mr Candy',
           home:  splashscreen(),
-          // Enable Device Preview integration
-          builder: DevicePreview.appBuilder, // يجعل التطبيق يعمل ضمن Device Preview
+          builder: DevicePreview.appBuilder,
         );
       },
     );

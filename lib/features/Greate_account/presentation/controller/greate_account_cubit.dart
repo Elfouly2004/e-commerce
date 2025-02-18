@@ -22,14 +22,12 @@ class GreateAccountCubit extends Cubit<GreateAccountState> {
 
   XFile? myPhoto;
 
-  // دالة لاختيار الصورة من المعرض
   Future<XFile?> pickImage() async {
     ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: ImageSource.gallery);
     return image;
   }
 
-  // دالة لاختيار الصورة وتحديث الحالة
   choosephoto() {
     pickImage().then((value) {
       emit(GreateAccountphotoSuccess());
@@ -39,7 +37,6 @@ class GreateAccountCubit extends Cubit<GreateAccountState> {
 
   final GreateAccountRepo greateAccountRepo;
 
-  // دالة لإنشاء الحساب
   Future<void> Greateacoount(BuildContext context) async {
     emit(GreateAccountLoadingState());
     try {
@@ -50,7 +47,6 @@ class GreateAccountCubit extends Cubit<GreateAccountState> {
         base64String = base64Encode(imageBytes);
       }
 
-      // التحقق من صحة البريد الإلكتروني
       final bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
           .hasMatch(Email.text.trim());
 
@@ -65,7 +61,6 @@ class GreateAccountCubit extends Cubit<GreateAccountState> {
       } else if (base64String == null) {
         emit(GreateAccountFailureState(errorMessage: "Please choose a photo."));
       } else {
-        // إرسال البيانات إلى الريبو لإنشاء الحساب
         var result = await greateAccountRepo.Greate_account(
           userModelToRegister: UserModelToRegister(
             name: Name.text.trim(),

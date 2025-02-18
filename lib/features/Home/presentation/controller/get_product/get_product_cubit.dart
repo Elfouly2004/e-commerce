@@ -51,11 +51,10 @@ class ProductsCubit extends Cubit<ProductsState> {
           (right) {
         productList = right;
 
-        // تحديث المنتجات المحفوظة في Hive
         for (var product in productList) {
           final savedFavorite = favoritesBox.get(product.id.toString());
           if (savedFavorite != null) {
-            product.inFavorites = savedFavorite; // استعادة حالة المنتج
+            product.inFavorites = savedFavorite;
           }
         }
 
@@ -119,7 +118,6 @@ class ProductsCubit extends Cubit<ProductsState> {
 
         cartsList[index] = updatedProduct;
 
-        // إصدار حالة النجاح مع قائمة جديدة لضمان إعادة البناء
         emit(ProductsSuccessState());
       },
     );

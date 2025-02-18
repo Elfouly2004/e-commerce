@@ -16,7 +16,6 @@ import 'home_repo.dart';
 class HomeRepoImplementation implements HomeRepo {
 
 
-  // قائمة المنتجات المخزنة في الريبو
   List<ProductModel> productList = [];
 
 
@@ -41,7 +40,7 @@ class HomeRepoImplementation implements HomeRepo {
         return left(ApiFailure(message: body["message"]));
       }
     } catch (e) {
-      print('Error occurred: $e');  // Print the error
+      print('Error occurred: $e');
       return left(ApiFailure(message: "Error Occurred"));
     }
   }
@@ -85,9 +84,9 @@ class HomeRepoImplementation implements HomeRepo {
         print('Response data: ${body["data"]["data"]}');
 
         if (body["status"] == true) {
-          productList = []; // Clear the list before populating it
+          productList = [];
 
-          // Iterate over body["data"]["products"] instead of body["data"]
+
           for (var product in body["data"]["data"]) {
             productList.add(ProductModel.fromJson(product));
           }
@@ -101,7 +100,7 @@ class HomeRepoImplementation implements HomeRepo {
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
-      print('Error occurred: $e'); // Print the error for debugging
+      print('Error occurred: $e');
       return left(ApiFailure(message: "Error Occurred"));
     }
   }
@@ -153,7 +152,7 @@ class HomeRepoImplementation implements HomeRepo {
       final response = await http.post(
         Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
           headers: {
-            "Authorization": "$token",  // تأكد أن هذا التوكن صحيح
+            "Authorization": "$token",
           },
           body: body
 
@@ -182,7 +181,7 @@ print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[in
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
-      print('Error occurred: $e'); // Debugging log
+      print('Error occurred: $e'); 
       return left(ApiFailure(message: "Error Occurred"));
     }
   }

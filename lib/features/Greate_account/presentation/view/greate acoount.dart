@@ -26,7 +26,7 @@ class Greate_acoount extends StatelessWidget {
       body: BlocConsumer<GreateAccountCubit,GreateAccountState>(
         listener: (context, state) {
           if (state is GreateAccountSuccessState) {
-            debugPrint("Account created successfully"); // إضافة رسالة للتأكد من الوصول إلى هذه الحالة
+            debugPrint("Account created successfully");
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const Login()),

@@ -36,7 +36,7 @@ int totalprice=0;
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         totalprice=body["data"]["total"].toInt();
-        print('Response body: $body');  // Log the entire response body
+        print('Response body: $body');
         if (body["status"] == true) {
           cartsList = [];
           for (var cartItem in body["data"]["cart_items"]) {
@@ -75,14 +75,14 @@ int totalprice=0;
           "Authorization": "$token",
         },
         body: jsonEncode({
-          "quantity": quantity, // إرسال البيانات في body
+          "quantity": quantity,
         }),
       );
 
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         totalprice=body["data"]["total"].toInt();
-        print('Response body: $body');  // Log the entire response body
+        print('Response body: $body');
         if (body["status"] == true) {
           cartsList = [];
           for (var cartItem in body["data"]["cart_items"]) {

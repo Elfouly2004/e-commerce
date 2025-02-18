@@ -23,8 +23,8 @@ class CategoriesGrid extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 10.0, // إزالة المسافات الأفقية بين العناصر
-              mainAxisSpacing: 10.0, // إزالة المسافات الرأسية بين العناصر
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 10.0,
               childAspectRatio: 1.6,
             ),
             itemCount: categories.length,
@@ -49,7 +49,7 @@ class CategoriesGrid extends StatelessWidget {
                     color: Colors.white54,
                   ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center, // تصحيح تموضع العناصر عموديًا
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                         child: ClipRRect(

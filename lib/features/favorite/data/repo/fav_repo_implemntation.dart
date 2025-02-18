@@ -35,8 +35,7 @@ class FavRepoImplemntation implements FavRepo {
       );
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
-        print('Response body: $body'); // طباعة بيانات الاستجابة
-
+        print('Response body: $body');
         if (body["status"] == true) {
           favlist = [];
 
@@ -68,7 +67,7 @@ class FavRepoImplemntation implements FavRepo {
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
-      print('Error occurred: $e'); // طباعة الخطأ لتصحيح الأخطاء
+      print('Error occurred: $e');
       return left(ApiFailure(message: "Error Occurred"));
     }
   }
@@ -93,13 +92,13 @@ class FavRepoImplemntation implements FavRepo {
         },
       );
 
-      print("🟢 Response: ${response.body}");
+      print("Response: ${response.body}");
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
 
         if (responseBody["status"] == true) {
-          // ✅ طلب ناجح: لا حاجة لإرجاع البيانات المحذوفة، فقط الإشارة إلى نجاح العملية
+
           return const Right(null);
         } else {
           return left(ApiFailure(message: responseBody["message"] ?? "Failed to delete item"));
@@ -111,7 +110,7 @@ class FavRepoImplemntation implements FavRepo {
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet connection"));
     } catch (e) {
-      print('🔴 Error occurred: $e');
+      print(' Error occurred: $e');
       return left(ApiFailure(message: "An unexpected error occurred"));
     }
   }

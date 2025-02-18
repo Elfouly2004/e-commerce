@@ -11,7 +11,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
 
   final FavRepoImplemntation FavRepo = FavRepoImplemntation();
   List<FavItemModel> favoritesList = [];
-  int? loadingIndex; // 🟡 لتحديد العنصر الجاري حذفه
+  int? loadingIndex;
 
   static FavoritesCubit get(context) => BlocProvider.of(context);
 
@@ -53,13 +53,13 @@ class FavoritesCubit extends Cubit<FavoritesState> {
           (_) {
         debugPrint("🟢 Favorite Deleted Successfully: Index $index");
 
-        // التأكد من أن `index` لا يتجاوز حجم القائمة
+
         if (index >= 0 && index < favoritesList.length) {
           favoritesList.removeAt(index);
         }
         loadingIndex = null;
 
-        // إعادة تحميل القائمة بعد الحذف
+
         fetchFavorites();
       },
     );

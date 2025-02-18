@@ -67,7 +67,6 @@ class HomeScreen extends StatelessWidget {
         children: [
            Column(
             children: [
-              // النصف الأول مع gradient
               Expanded(
                 flex:2,
                 child: Container(
@@ -86,7 +85,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               
-              // النصف الثاني بالأبيض
               Expanded(
                 flex: 6,
                 child: Container(
@@ -96,7 +94,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          //  فوق النصين
           Positioned(
             top: height.h,
             left: 0.0,

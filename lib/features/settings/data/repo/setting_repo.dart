@@ -10,6 +10,12 @@ abstract class SettingRepo {
 
 
 
+  Future<Either<Failure, String>> editprofile(
+      {required String name, required  String email,
+        required String password , required String phone,required String image});
+
+
+
 
 
 }

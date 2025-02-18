@@ -7,10 +7,19 @@ import 'package:mrcandy/features/settings/data/repo/setting_repo_implemntation.d
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../../core/shared_widgets/custom_button.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../controller/profile_cubit.dart';
+import '../controller/profile_cubit/profile_cubit.dart';
+import 'edit_profile.dart';
 
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -41,7 +50,7 @@ class ProfilePage extends StatelessWidget {
                 return Column(
                   children: [
                     SizedBox(height: 30),
-                    ProfileAvatar(imageUrl: profile.image),
+                    ProfileAvatar(backgroundImage:NetworkImage( profile.image)),
                     SizedBox(height: 30),
                     Text(
                       profile.name ?? "No Name",
@@ -63,9 +72,17 @@ class ProfilePage extends StatelessWidget {
 
 
                     CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProfilePage(profile: profile)
+                          ),
+                        );
+                      },
                       text: "Edit Profile",
                     ),
+
 
                   ],
                 );

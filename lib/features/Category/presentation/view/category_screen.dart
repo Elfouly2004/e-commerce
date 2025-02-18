@@ -39,7 +39,7 @@ final int id;
             style: GoogleFonts.almarai(
               color: AppColors.white,
               fontSize: 20.r, // حجم الخط
-              fontWeight: FontWeight.bold, // سمك الخط
+              fontWeight: FontWeight.bold,
             ),
           ),
         centerTitle: true,

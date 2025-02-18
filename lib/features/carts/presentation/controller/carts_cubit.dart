@@ -30,7 +30,7 @@ class CartsCubit extends Cubit<CartsState> {
       },
           (data) {
         cartsList = data;
-        totalprice = cartRepo.totalprice; // تحديث قيمة totalprice
+        totalprice = cartRepo.totalprice;
 
         emit(CartsSuccessState(cartsList));
       },
@@ -50,7 +50,6 @@ class CartsCubit extends Cubit<CartsState> {
           (_) {
            emit(CartsLoadingState()) ;
 
-        // حذف العنصر من القائمة
         cartsList.removeAt(index);
 
         emit(CartsSuccessState(List.from(cartsList)));

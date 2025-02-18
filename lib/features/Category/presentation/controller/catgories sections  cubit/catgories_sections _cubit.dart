@@ -21,7 +21,7 @@ class CatgoriesSectionsCubit extends Cubit<CatgoriesSectionsState> {
   List<ProductModel> categoriesdeatials_lst = [];
   List<CartItemModel> carts_categoriesdeatials_lst = [];
 
-  final Box favoritesBox = Hive.box('favorites'); // صندوق التخزين
+  final Box favoritesBox = Hive.box('favorites');
 
   static CatgoriesSectionsCubit get(context) => BlocProvider.of(context);
 
@@ -96,7 +96,6 @@ class CatgoriesSectionsCubit extends Cubit<CatgoriesSectionsState> {
 
         carts_categoriesdeatials_lst[index] = updatedProduct;
 
-        // إصدار حالة النجاح مع قائمة جديدة لضمان إعادة البناء
         emit(CategoriesSuccessState());
       },
     );

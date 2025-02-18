@@ -18,7 +18,7 @@ class BannersCubit extends Cubit<BannersStates> {
       print("Error fetching banners: ${failure.message}");
       emit(BannersFailureState(errorMessage: failure.message));
     }, (data) {
-      if (data.isNotEmpty) { // ✅ تأكد أن البيانات ليست فارغة
+      if (data.isNotEmpty) {
         banners = data;
         print("Fetched banners: $banners");  // Debug output
         emit(BannersSuccessState());

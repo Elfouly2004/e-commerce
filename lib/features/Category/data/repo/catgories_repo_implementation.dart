@@ -49,7 +49,6 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
 
       final body = jsonDecode(response.body);
 
-      // التحقق من هيكل الاستجابة وتحويل البيانات باستخدام fromJson
       if (body["status"] == true && body["data"] != null) {
 
         final categories = (body["data"]["data"] as List)
@@ -88,7 +87,7 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
       final response = await http.post(
           Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
           headers: {
-            "Authorization": "$token",  // تأكد أن هذا التوكن صحيح
+            "Authorization": "$token",
           },
           body: body
 

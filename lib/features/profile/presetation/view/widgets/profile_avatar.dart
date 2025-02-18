@@ -1,10 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mrcandy/core/utils/app_colors.dart';
 
 class ProfileAvatar extends StatelessWidget {
-  final String? imageUrl;
 
-  const ProfileAvatar({Key? key, required this.imageUrl}) : super(key: key);
+final ImageProvider<Object>? backgroundImage;
+  const ProfileAvatar({Key? key, this.backgroundImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ProfileAvatar extends StatelessWidget {
       ),
       child: CircleAvatar(
         radius: 60,
-        backgroundImage: NetworkImage(imageUrl ?? "https://via.placeholder.com/150"),
+        backgroundImage: backgroundImage,
       ),
     );
   }

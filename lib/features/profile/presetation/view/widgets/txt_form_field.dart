@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // استيراد Google Fonts
+import 'package:google_fonts/google_fonts.dart';
 
-import '../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_colors.dart'; // استيراد Google Fonts
 
-class CustomTextformfeild extends StatelessWidget {
-  const CustomTextformfeild({super.key, 
+
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    super.key,
     required this.keyboardType,
     required this.suffixIcon,
-    required this.controller, this.hintText,
+    required this.controller,
+    this.hintText,
   });
 
   final TextInputType? keyboardType;
@@ -21,12 +24,12 @@ class CustomTextformfeild extends StatelessWidget {
       controller: controller,
       autofocus: false,
       textDirection: TextDirection.ltr,
-      textAlign: TextAlign.right,
+      textAlign: TextAlign.left,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       style: GoogleFonts.almarai(
-        color: AppColors.Textformfeild,
+        color: AppColors.Appbar3,
         fontWeight: FontWeight.w500,
         fontSize: 20,
       ),

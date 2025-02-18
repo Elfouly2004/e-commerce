@@ -40,8 +40,8 @@ class _HomeState extends State<Home> {
     textDirection: TextDirection.rtl,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),  // حواف دائرية من الأعلى (يسار)
-          topRight: Radius.circular(20), // حواف دائرية من الأعلى (يمين)
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
         child: SalomonBottomBar(
           backgroundColor: AppColors.bottomNavbar,

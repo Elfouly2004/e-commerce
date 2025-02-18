@@ -237,7 +237,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                       ),
                       Positioned(
                         top: 5.h,
-                        right: 5.w, // تعديل الاتجاه ليكون من اليمين
+                        right: 5.w,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
