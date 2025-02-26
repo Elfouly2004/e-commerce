@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mrcandy/core/utils/app_colors.dart';
 
 class ProfileAvatar extends StatelessWidget {
 
 final ImageProvider<Object>? backgroundImage;
-  const ProfileAvatar({Key? key, this.backgroundImage}) : super(key: key);
+  const ProfileAvatar({super.key, this.backgroundImage});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +15,9 @@ import 'features/change_pass/presentation/controller/change_pass_cubit.dart';
 import 'features/favorite/presentation/controller/fav_cubit.dart';
 import 'features/login/presentation/controller/login_cubit.dart';
 import 'features/splash_screen/views/splash_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,32 +27,21 @@ void main() async {
   await Hive.openBox('favorites-product');
   await ScreenUtil.ensureScreenSize();
   Bloc.observer = MyBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => ProductsCubit()..fetchproducts()),
+      EasyLocalization(
+          supportedLocales: const [
+            Locale('ar'), // Arabic
+            Locale('en'), // English
+          ],
+          path: 'assets/translation', // Path to translation files
+          fallbackLocale: const Locale('ar'), // Fallback language
+          startLocale: const Locale('ar'),
 
-        BlocProvider(create: (_)=> BannersCubit()..fetchBanners()),
-
-        BlocProvider( create: (_) => CategoriesCubit()..fetchCategories(),),
-
-        BlocProvider(  create: (context) => FavoritesCubit()..fetchFavorites(),),
-
-        BlocProvider(  create: (context) => CartsCubit()..fetchCarts(),),
-
-        BlocProvider(  create: (context) => ChangePassCubit( settingRepo: SettingRepoImplemntation())),
-
-        BlocProvider<LoginCubit>(
-          create: (context) => LoginCubit(LoginRepoImplementation()),
-        ),
-
-        BlocProvider<GreateAccountCubit>(
-          create: (context) => GreateAccountCubit(GreateAccountImplementation()),
-        ),
-      ],
-      child: const MyApp(),
-    ),
+          child: MyApp()
+      ),
   );
 }
 
@@ -59,18 +50,45 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => ProductsCubit()..fetchproducts()),
+        BlocProvider(create: (_) => BannersCubit()..fetchBanners()),
+        BlocProvider(create: (_) => CategoriesCubit()..fetchCategories(context)),
+        BlocProvider(create: (_) => FavoritesCubit()..fetchFavorites()),
+        BlocProvider(create: (_) => CartsCubit()..fetchCarts()),
+        BlocProvider(create: (_) => ChangePassCubit(settingRepo: SettingRepoImplemntation())),
+        BlocProvider(create: (_) => LoginCubit(LoginRepoImplementation())),
+        BlocProvider(create: (_) => GreateAccountCubit(GreateAccountImplementation())),
+      ],
+      child: const AppView(),
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(375, 1006),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Mr Candy',
-          home:  splashscreen(),
-          builder: DevicePreview.appBuilder,
-        );
-      },
+            return MaterialApp(
+              navigatorKey: navigatorKey,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+
+              debugShowCheckedModeBanner: false,
+              title: 'Mr Candy',
+              home: splashscreen(),
+            );
+          },
+
+
     );
   }
 }

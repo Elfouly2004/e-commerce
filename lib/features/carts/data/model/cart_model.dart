@@ -6,7 +6,7 @@ class CartItemModel extends Equatable {
   final int quantity;
   final ProductModel product;
 
-  CartItemModel({
+  const CartItemModel({
     required this.id,
     required this.quantity,
     required this.product,

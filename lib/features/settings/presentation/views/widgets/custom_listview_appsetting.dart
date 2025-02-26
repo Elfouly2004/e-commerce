@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/utils/app_colors.dart';
-import '../../controller/setting_cubit.dart';
+import '../../controller/cubit/setting/setting_cubit.dart';
 import 'share_listile.dart';
 
 class CustomListviewAppsetting extends StatelessWidget {
@@ -27,7 +28,7 @@ class CustomListviewAppsetting extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: ShareListile(
                     title: Text(
-                      item.title,
+                      item.title.tr(),
                       style: GoogleFonts.almarai(
                         fontSize: 17.sp,
                         fontWeight: FontWeight.w500,

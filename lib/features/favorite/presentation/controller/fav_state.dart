@@ -2,7 +2,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:mrcandy/features/favorite/data/model/fav_model.dart';
 
-import '../../../Home/data/model/product_model.dart';
 
 abstract class FavoritesState extends Equatable {
   @override

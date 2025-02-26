@@ -1,5 +1,6 @@
 
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -11,6 +12,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../../../core/utils/endpoints.dart';
 
+import '../../../../main.dart';
 import '../../../carts/data/model/cart_model.dart';
 import '../../presentation/controller/catgories sections  cubit/catgories_sections _cubit.dart';
 import 'catgories_repo.dart';
@@ -18,6 +20,9 @@ import 'catgories_repo.dart';
 class CatgoriesRepoImplementation implements CatgoriesRepo {
 
   @override
+
+
+  String get currentLang => EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
 
   Future<Either<Failure, List<ProductModel>>> get_catgories_deatils({required int id}) async {
 
@@ -29,20 +34,15 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
 
 
     try {
-      // إعداد الـ headers إذا لزم الأمر
-      // final headers = {
-      //   'Authorization': 'Bearer YOUR_TOKEN',
-      //   'Content-Type': 'application/json',
-      // };
 
-      // إرسال الطلب
+
       final response = await http.get(
         Uri.parse("${EndPoints.baseUrl + EndPoints.categories}/$id"),
-        // headers: headers,
-
+        headers: {
+          "lang": currentLang,
+        },
       );
 
-      // التحقق من حالة الاستجابة
       if (response.statusCode != 200) {
         return left(ApiFailure(message: "Failed to fetch data: ${response.statusCode}"));
       }
@@ -88,6 +88,8 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
           Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
           headers: {
             "Authorization": "$token",
+            "lang": currentLang,
+
           },
           body: body
 
@@ -141,6 +143,8 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
         Uri.parse(EndPoints.baseUrl + EndPoints.carts),
         headers: {
           "Authorization": "$token",
+          "lang": currentLang,
+
         },
         body: body,
       );
@@ -151,12 +155,10 @@ class CatgoriesRepoImplementation implements CatgoriesRepo {
         final responseBody = jsonDecode(response.body);
 
         if (responseBody["status"] == true) {
-          // طلب ناجح
           final cartItemData = responseBody["data"];
           final cartItemModel = CartItemModel.fromJson(cartItemData);
           return right(cartItemModel);
         } else {
-          // فشل بسبب خطأ في الطلب
           return left(ApiFailure(message: responseBody["message"] ?? "Failed to add to cart"));
         }
       } else {

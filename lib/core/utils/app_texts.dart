@@ -33,5 +33,7 @@ class AppTexts {
   static const String add_done = "تمت الإضافة بنجاح";
   static const String remove_done = "تم الحذف";
   static const String ok = 'موافق';
+  static const String ChangePassword = "Change Password";
+  static const String PrivacySettings = "Privacy Settings";
 
 }

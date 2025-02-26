@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 import 'package:mrcandy/features/Home/data/model/categories_model.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/endpoints.dart';
+import '../../../../main.dart';
 import '../../../carts/data/model/cart_model.dart';
 import '../../presentation/controller/get_product/get_product_cubit.dart';
 import '../model/banners_model.dart';
@@ -18,6 +21,8 @@ class HomeRepoImplementation implements HomeRepo {
 
   List<ProductModel> productList = [];
 
+  // String currentLang = EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
+  String get currentLang => EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
 
   @override
   Future<Either<Failure, List<BannersModel>>> get_banners() async {
@@ -46,10 +51,17 @@ class HomeRepoImplementation implements HomeRepo {
   }
 
   @override
-  Future<Either<Failure, List<CategoriesModel>>> get_categories() async {
+  Future<Either<Failure, List<CategoriesModel>>> get_categories(BuildContext context) async{
     List<CategoriesModel> categoriesLst = [];
     try {
-      final response = await http.get(Uri.parse(EndPoints.baseUrl + EndPoints.categories));
+
+      final response = await http.get(
+        Uri.parse(EndPoints.baseUrl + EndPoints.categories),
+        headers: {
+          "lang": currentLang,
+        },
+      );
+
       final body = jsonDecode(response.body);
 
       if (body["status"] == true) {
@@ -69,27 +81,31 @@ class HomeRepoImplementation implements HomeRepo {
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
-      print('Error occurred: $e');  // Print the error
+      print('Error occurred: $e');
       return left(ApiFailure(message: "Error Occurred"));
     }
   }
 
+
   @override
   Future<Either<Failure, List<ProductModel>>> get_product() async {
     try {
-      final response = await http.get(Uri.parse(EndPoints.baseUrl + EndPoints.home));
+
+      final response = await http.get(
+        Uri.parse(EndPoints.baseUrl + EndPoints.home),
+        headers: {
+          "lang": currentLang,
+        },
+      );
 
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         print('Response data: ${body["data"]["data"]}');
 
         if (body["status"] == true) {
-          productList = [];
-
-
-          for (var product in body["data"]["data"]) {
-            productList.add(ProductModel.fromJson(product));
-          }
+          List<ProductModel> productList = body["data"]["data"]
+              .map<ProductModel>((product) => ProductModel.fromJson(product))
+              .toList();
           return right(productList);
         } else {
           return left(ApiFailure(message: body["message"] ?? "Unknown error occurred"));
@@ -106,73 +122,44 @@ class HomeRepoImplementation implements HomeRepo {
   }
 
 
-  @override
-  Future<Either<Failure, List<ProductModel>>> get_Gatgories({id}) async {
-    try {
-      final response = await http.get(Uri.parse("${EndPoints.baseUrl + EndPoints.categories}/$id"));
-      if (response.statusCode == 200) {
-        final body = jsonDecode(response.body);
-        print('Response data: ${body["data"]["products"]}');
-
-        if (body["status"] == true) {
-          productList = []; // تأكد من تفريغ القائمة قبل ملئها
-          for (var product in body["data"]["products"]) {
-            productList.add(ProductModel.fromJson(product));
-          }
-          return right(productList);
-        } else {
-          return left(ApiFailure(message: body["message"]));
-        }
-      } else {
-        return left(ApiFailure(message: "Failed to fetch data, Status code: ${response.statusCode}"));
-      }
-    } on SocketException {
-      return left(NoInternetFailure(message: "No Internet"));
-    } catch (e) {
-      print('Error occurred: $e');  // Print the error for debugging
-      return left(ApiFailure(message: "Error Occurred"));
-    }
-  }
 
   @override
-  Future<Either<Failure, ProductModel>> Addfav({context,index}) async {
-
-    print("tttttttttttttt is ${Hive.box("setting").get("token")}");
+  Future<Either<Failure, ProductModel>> Addfav({context, index}) async {
+    print("Token is: ${Hive.box("setting").get("token")}");
     final token = Hive.box("setting").get("token");
+
     if (token == null || token.isEmpty) {
       print("Error: Token is missing or invalid");
       return left(ApiFailure(message: "Authentication token is missing."));
     }
 
-
     try {
-      final Map<String, dynamic> body =
-      {"product_id": BlocProvider.of<ProductsCubit>(context).productList[index].id.toString()};
-      // Define the request body
+
+
+
+      final Map<String, dynamic> body = {
+        "product_id": BlocProvider.of<ProductsCubit>(context).productList[index].id.toString(),
+      };
+
       final response = await http.post(
         Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
-          headers: {
-            "Authorization": "$token",
-          },
-          body: body
-
+        headers: {
+          "Authorization": "$token",
+          "lang": currentLang,
+        },
+        body: body,
       );
 
-      print("RRRRRRRRRRRRRRRRRR     ${response.body}");
-
-print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[index].id}");
+      print("Response: ${response.body}");
+      print("Product ID: ${BlocProvider.of<ProductsCubit>(context).productList[index].id}");
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         if (responseBody["status"] == true) {
-          // طلب ناجح
           final productData = responseBody["data"]["product"];
           final productModel = ProductModel.fromJson(productData);
           return right(productModel);
-
-
         } else {
-          // فشل بسبب عدم التصريح
           return left(ApiFailure(message: responseBody["message"] ?? "Failed to add to favorites"));
         }
       } else {
@@ -181,10 +168,11 @@ print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[in
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
-      print('Error occurred: $e'); 
+      print('Error occurred: $e');
       return left(ApiFailure(message: "Error Occurred"));
     }
   }
+
 
 
 
@@ -200,6 +188,8 @@ print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[in
     }
 
     try {
+
+
       final Map<String, dynamic> body = {
         "product_id": BlocProvider.of<ProductsCubit>(context)
             .productList[index]
@@ -211,22 +201,30 @@ print("iddddddddddddd = ${BlocProvider.of<ProductsCubit>(context).productList[in
         Uri.parse(EndPoints.baseUrl + EndPoints.carts),
         headers: {
           "Authorization": "$token",
+          "lang": currentLang,
+
+
         },
         body: body,
       );
 
       print("Response: ${response.body}");
+      print("Response: $currentLang");
+      print("Response: $currentLang");
+      print("Response: $currentLang");
+      print("Response: $currentLang");
+      print("Response: $currentLang");
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
 
         if (responseBody["status"] == true) {
-          // طلب ناجح
+
           final cartItemData = responseBody["data"];
           final cartItemModel = CartItemModel.fromJson(cartItemData);
           return right(cartItemModel);
         } else {
-          // فشل بسبب خطأ في الطلب
+
           return left(ApiFailure(message: responseBody["message"] ?? "Failed to add to cart"));
         }
       } else {

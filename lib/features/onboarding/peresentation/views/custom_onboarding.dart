@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mrcandy/core/utils/app_images.dart';
 import 'package:mrcandy/core/utils/app_texts.dart';
-import 'package:mrcandy/features/Home/presentation/view/widgets/home.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../login/presentation/view/Login.dart';

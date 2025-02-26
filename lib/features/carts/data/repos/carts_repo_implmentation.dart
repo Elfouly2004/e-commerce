@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -11,12 +12,16 @@ import 'package:mrcandy/core/errors/failure.dart';
 import 'package:mrcandy/features/carts/presentation/controller/carts_cubit.dart';
 
 import '../../../../core/utils/endpoints.dart';
+import '../../../../main.dart';
 import '../model/cart_model.dart';
 import 'carts_repo.dart';
 import 'package:http/http.dart' as http;
 
 
 class CartsRepoImplmentation implements CartsRepo {
+
+  String get currentLang => EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
+
 
 
 int totalprice=0;
@@ -30,6 +35,7 @@ int totalprice=0;
         Uri.parse(EndPoints.baseUrl + EndPoints.carts),
         headers: {
           "Authorization": "$token",
+          "lang":currentLang,
         },
       );
 

@@ -1,10 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mrcandy/core/utils/app_colors.dart';
-import 'package:mrcandy/core/utils/app_texts.dart';
 import 'package:mrcandy/core/shared_widgets/custom_button.dart';
-
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../profile/presetation/view/widgets/txt_field.dart';
 import '../controller/change_pass_cubit.dart';
@@ -32,7 +31,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back_ios, color: AppColors.white, size: 25.sp),
           ),
-          title: "Change password",
+          title: "changepassword".tr(),
         ),
       ),
       body: BlocConsumer<ChangePassCubit, ChangePassState>(
@@ -56,11 +55,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
-                Text("Current Password"),
+                Text("CurrentPassword".tr()),
                 CustomTextField(
                   controller: _currentPasswordController,
                   obscureText: _obscureCurrentPassword,
-                  hintText: "Enter your current password",
+                  hintText: "Enteroldpassword".tr(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscureCurrentPassword ? Icons.visibility_off : Icons.visibility),
                     onPressed: () {
@@ -70,12 +69,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     },
                   ),
                 ),
-                const SizedBox(height: 16),
-                Text("New Password"),
+                const SizedBox(height: 25),
+                Text("newpassword".tr()),
                 CustomTextField(
                   controller: _newPasswordController,
                   obscureText: _obscureNewPassword,
-                  hintText: "Enter your new password",
+                  hintText: "Enternewpassword".tr(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscureNewPassword ? Icons.visibility_off : Icons.visibility),
                     onPressed: () {
@@ -90,11 +89,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 Expanded(
                   child: Center(
                     child: CustomButton(
-                      text: "change password"
-                          "",
-                      onTap: state is ChangePasswordLoading
-                          ? null
-                          : () {
+                      text: "changepassword".tr(),
+                      onTap: state is ChangePasswordLoading ? null : () {
                         context.read<ChangePassCubit>().changepass(
                           currentPassword: _currentPasswordController.text,
                           newPassword: _newPasswordController.text,

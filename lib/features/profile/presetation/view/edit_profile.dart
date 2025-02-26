@@ -1,27 +1,28 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icon_snackbar/flutter_icon_snackbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mrcandy/core/shared_widgets/custom_button.dart';
 import 'package:mrcandy/core/utils/app_colors.dart';
+import 'package:mrcandy/features/Home/presentation/view/widgets/home.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/profile_avatar.dart';
 import 'package:mrcandy/features/profile/presetation/view/widgets/txt_form_field.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
-import '../../../../shared_widgets/Custom _textform field.dart';
 import '../../../settings/data/repo/setting_repo_implemntation.dart';
 import '../../data/model/profile_model.dart';
-import '../controller/edit_profile_cubit/edit_profile_cubit.dart';
+import '../controller/profile_cubit/profile_cubit.dart';
 
 class EditProfilePage extends StatelessWidget {
   final ProfileModel profile;
 
-  const EditProfilePage({Key? key, required this.profile}) : super(key: key);
+  const EditProfilePage({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EditProfileCubit(editProfileRepo: SettingRepoImplemntation()),
+      create: (context) => ProfileCubit(settingRepo: SettingRepoImplemntation()),
       child: EditProfilePageBody(profile: profile),
     );
   }
@@ -30,7 +31,7 @@ class EditProfilePage extends StatelessWidget {
 class EditProfilePageBody extends StatefulWidget {
   final ProfileModel profile;
 
-  const EditProfilePageBody({Key? key, required this.profile}) : super(key: key);
+  const EditProfilePageBody({super.key, required this.profile});
 
   @override
   _EditProfilePageBodyState createState() => _EditProfilePageBodyState();
@@ -62,20 +63,22 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<EditProfileCubit, EditProfileState>(
+    return BlocListener<ProfileCubit, ProfileState>(
       listener: (context, state) {
         if (state is EditProfileSuccess) {
           IconSnackBar.show(
             context,
             snackBarType: SnackBarType.alert,
-            label: state.message,
+            label: state.message.tr(),
             labelTextStyle: const TextStyle(fontWeight: FontWeight.bold),
             backgroundColor: Colors.green,
             iconColor: Colors.white,
             maxLines: 2,
           );
-          Navigator.pop(context);
-        } else if (state is EditProfileFailure) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          );  } else if (state is EditProfileFailure) {
           IconSnackBar.show(
             context,
             snackBarType: SnackBarType.alert,
@@ -89,7 +92,6 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
        setState(() {
          uploadedImageUrl = state.imageUrl;
             });
-
         }
       },
       child: Scaffold(
@@ -100,7 +102,7 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
               onPressed: () => Navigator.pop(context),
               icon: Icon(Icons.arrow_back_ios, color: AppColors.white, size: 25.sp),
             ),
-            title: "Edit Profile",
+            title: "Editprofile".tr(),
           ),
         ),
         body: Padding(
@@ -109,7 +111,7 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
             children: [
               GestureDetector(
                 onTap: () {
-                  context.read<EditProfileCubit>().choosephoto();
+                  context.read<ProfileCubit>().choosephoto();
                 },
                 child: ProfileAvatar(
                   backgroundImage: uploadedImageUrl != null && uploadedImageUrl!.isNotEmpty
@@ -143,13 +145,13 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
               ),
               Spacer(),
               
-              BlocBuilder<EditProfileCubit, EditProfileState>(
+              BlocBuilder<ProfileCubit, ProfileState>(
                 builder: (context, state) {
                   return CustomButton(
                     onTap: state is EditProfileLoading
                         ? null
                         : () {
-                      context.read<EditProfileCubit>().editProfile(
+                      context.read<ProfileCubit>().editProfile(
                         name: nameController.text,
                         email: emailController.text,
                         password: "",
@@ -157,7 +159,7 @@ class _EditProfilePageBodyState extends State<EditProfilePageBody> {
                         image: uploadedImageUrl ?? "",
                       );
                     },
-                    text: state is EditProfileLoading ? "Saving..." : "Save Changes",
+                    text: state is EditProfileLoading ? "save".tr():"savechange".tr(),
                   );
                 },
               ),

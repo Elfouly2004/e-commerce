@@ -24,3 +24,24 @@ class ProfileFailure extends ProfileState {
   @override
   List<Object?> get props => [message];
 }
+
+
+class EditProfileLoading extends ProfileState {}
+class EditProfileupdated extends ProfileState {}
+
+class EditProfileSuccess extends ProfileState {
+  final String message;
+  EditProfileSuccess({required this.message});
+}
+
+class EditProfileFailure extends ProfileState {
+  final String error;
+  EditProfileFailure({required this.error});
+}
+
+class EditProfileImageUploaded extends ProfileState {
+  final String imageUrl;
+
+  EditProfileImageUploaded({required this.imageUrl});
+}
+

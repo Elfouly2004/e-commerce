@@ -8,6 +8,8 @@ class BannersCubit extends Cubit<BannersStates> {
   BannersCubit() : super(BannersInitialState());
 
   final HomeRepoImplementation homeRepo = HomeRepoImplementation();
+
+
   List<BannersModel> banners = [];
   static BannersCubit get(context) => BlocProvider.of(context);
   Future<void> fetchBanners() async {

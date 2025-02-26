@@ -1,43 +1,41 @@
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mrcandy/core/shared_widgets/custom_appbar.dart';
-import 'package:mrcandy/core/utils/app_texts.dart';
-import 'package:mrcandy/features/settings/presentation/controller/setting_cubit.dart';
+import 'package:mrcandy/features/settings/presentation/controller/cubit/setting/setting_cubit.dart';
 import 'package:mrcandy/features/settings/presentation/views/widgets/custom_listview_Accountsetting.dart';
 import 'package:mrcandy/features/settings/presentation/views/widgets/custom_listview_appsetting.dart';
 import 'package:mrcandy/features/settings/presentation/views/widgets/custom_setting_text.dart';
-import 'package:mrcandy/features/settings/presentation/views/widgets/share_listile.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../data/model/setting_item_model.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.setLocale(Locale('en', 'US'));
+
     return BlocProvider(
-      create: (context) => SettingCubit()..loadSettings(context), // تحميل البيانات عند الإنشاء
+      create: (context) => SettingCubit()..loadSettings(context),
       child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100.h),
+          child: CustomAppbar(
+            title: context.tr('Setting')
+          ),
+        ),
         body: Column(
           children: [
 
-            SizedBox(
-              height: 111.h,
-              child: const CustomAppbar(title: AppTexts.Setting),
-            ),
 
-
-            CustomSettingText( data: AppTexts.Account_setting,),
+            CustomSettingText( data: "Account_setting".tr(),),
 
 
 
             CustomListviewAccountsetting(),
 
 
-            CustomSettingText( data: AppTexts.App_setting,),
+            CustomSettingText( data: "App_setting".tr(),),
 
 
             CustomListviewAppsetting()

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mrcandy/core/utils/app_texts.dart';
@@ -6,22 +7,21 @@ class FavoriteDialog extends StatefulWidget {
   final bool isAdded;
 
   const FavoriteDialog({
-    Key? key,
+    super.key,
     required this.isAdded,
-  }) : super(key: key);
+  });
 
   @override
   _FavoriteDialogState createState() => _FavoriteDialogState();
 }
 
 class _FavoriteDialogState extends State<FavoriteDialog> {
-  double opacity = 0.0; // تبدأ الأنيميشن شفافة
+  double opacity = 0.0;
 
   @override
   void initState() {
     super.initState();
 
-    // تأخير ظهور الأنيميشن
     Future.delayed(const Duration(milliseconds: 200), () {
       if (mounted) {
         setState(() {
@@ -30,7 +30,6 @@ class _FavoriteDialogState extends State<FavoriteDialog> {
       }
     });
 
-    // إغلاق النافذة بعد 1.5 ثانية
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         Navigator.of(context).pop();
@@ -45,22 +44,22 @@ class _FavoriteDialogState extends State<FavoriteDialog> {
         borderRadius: BorderRadius.circular(15),
       ),
       content: Column(
-        mainAxisSize: MainAxisSize.min, // يجعل العمود بحجم المحتوى فقط
+        mainAxisSize: MainAxisSize.min,
         children: [
           AnimatedOpacity(
             opacity: opacity,
             duration: const Duration(milliseconds: 800),
             child: Lottie.asset(
               widget.isAdded
-                  ? 'assets/animations/Animation - 1739281684788.json' // عند الإضافة
-                  : 'assets/animations/Animation - 1739281299669.json', // عند الحذف
+                  ? 'assets/animations/Animation - 1739281684788.json'
+                  : 'assets/animations/Animation - 1739281299669.json',
               height: 150,
               width: 150,
             ),
           ),
-          const SizedBox(height: 20), // مسافة بين الأنيميشن والنص
+          const SizedBox(height: 20),
           Text(
-            widget.isAdded ? AppTexts.add_done : AppTexts.remove_done,
+            widget.isAdded ? "add_done".tr() : "remove_done".tr(),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,

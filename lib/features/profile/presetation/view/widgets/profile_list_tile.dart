@@ -6,11 +6,11 @@ class ProfileInfoTile extends StatelessWidget {
   final Color iconColor;
 
   const ProfileInfoTile({
-    Key? key,
+    super.key,
     required this.icon,
     required this.text,
     required this.iconColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,22 +30,25 @@ class _CartsPageState extends State<CartsPage> {
   Future<void> refresh() async {
     await context.read<CartsCubit>().fetchCarts();
   }
-
   @override
   Widget build(BuildContext context) {
+    final cubit = context.watch<CartsCubit>();
+
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100.h),
+        child: CustomAppbar(
+          title: 'bag'.tr(),
+        ),
+      ),
+
       body: Column(
         children: [
-          SizedBox(
-            height: 111.h,
-            child: const CustomAppbar(title: AppTexts.bag),
-          ),
           Expanded(
             child: RefreshIndicator(
               onRefresh: refresh,
               child: BlocBuilder<CartsCubit, CartsState>(
                 builder: (context, state) {
-                  final cubit = CartsCubit.get(context);
                   if (state is CartsLoadingState) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is cart_nointernetStates) {
@@ -86,56 +90,9 @@ class _CartsPageState extends State<CartsPage> {
                         ),
                       );
                     }
-                    return Column(
-                      children: [
-                        Expanded(
-                          flex: 10,
-                          child: Lstview(
-                            itemCount: cartItems.length,
-                            cartitems: cartItems,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  "${AppTexts.Total} ${cubit.totalprice} ج ",
-                                  style: GoogleFonts.cairo(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.Appbar3,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 20.h),
-                              ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 12.h,
-                                    horizontal: 30.w,
-                                  ),
-                                  backgroundColor: AppColors.Appbar3,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                ),
-                                child: Text(
-                                  "تأكيد",
-                                  style: GoogleFonts.cairo(
-                                    fontSize: 16.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    return Lstview(
+                      itemCount: cartItems.length,
+                      cartitems: cartItems,
                     );
                   }
                   return const Center(child: Text("Something went wrong!"));
@@ -143,8 +100,67 @@ class _CartsPageState extends State<CartsPage> {
               ),
             ),
           ),
+
+          Container(
+            padding: EdgeInsets.all(10.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 5,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Align(
+                    alignment: context.locale.languageCode == 'ar'
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    child: Text(
+                      "${"total".tr()} : ${cubit.totalprice} ${"eg".tr()} ",
+                      style: GoogleFonts.cairo(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.Appbar3,
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10.h),
+
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.h,
+                      horizontal: 30.w,
+                    ),
+                    backgroundColor: AppColors.Appbar3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                  ),
+                  child: Text(
+                    "confirm".tr(),
+                    style: GoogleFonts.cairo(
+                      fontSize: 16.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
+
 }

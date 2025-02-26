@@ -7,7 +7,7 @@ import 'package:mrcandy/features/favorite/presentation/view/fav_page.dart';
 import 'package:mrcandy/features/settings/presentation/views/setting_page.dart';
 import 'home_page.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -28,17 +28,11 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
+    String languageCode = context.locale.languageCode;
 
     return Scaffold(
       body: screens[currentIndex],
-
-
-    bottomNavigationBar: Directionality(
-    textDirection: TextDirection.rtl,
-      child: ClipRRect(
+      bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -55,30 +49,27 @@ class _HomeState extends State<Home> {
           items: [
             SalomonBottomBarItem(
               icon: Icon(CupertinoIcons.house_fill, size: 25.sp),
-              title: Text("الرئيسيه"),
+              title: Text(languageCode == "ar" ? "الرئيسية" : "Home"),
               selectedColor: AppColors.white,
             ),
             SalomonBottomBarItem(
               icon: Icon(CupertinoIcons.heart, size: 25.sp),
-              title: Text("المفضله"),
+              title: Text(languageCode == "ar" ? "المفضلة" : "Favorites"),
               selectedColor: AppColors.white,
             ),
             SalomonBottomBarItem(
               icon: Icon(CupertinoIcons.bag, size: 25.sp),
-              title: Text("السله"),
+              title: Text(languageCode == "ar" ? "السلة" : "Cart"),
               selectedColor: AppColors.white,
             ),
             SalomonBottomBarItem(
               icon: Icon(Icons.settings, size: 25.sp),
-              title: Text("الاعدادات"),
+              title: Text(languageCode == "ar" ? "الإعدادات" : "Settings"),
               selectedColor: AppColors.white,
             ),
           ],
         ),
       ),
-    ),
-
-
     );
   }
 }

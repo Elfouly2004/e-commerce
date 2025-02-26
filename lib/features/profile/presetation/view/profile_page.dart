@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,6 +13,8 @@ import 'edit_profile.dart';
 
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
@@ -32,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () => Navigator.pop(context),
               icon: Icon(Icons.arrow_back_ios, color: AppColors.white, size: 25.sp),
             ),
-            title: "Profile",
+            title: "profile".tr(),
           ),
         ),
         body: Padding(
@@ -80,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         );
                       },
-                      text: "Edit Profile",
+                      text: "Editprofile".tr(),
                     ),
 
 

@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../controller/get_product/get_product_cubit.dart';
 import '../../controller/get_product/get_product_state.dart';
+import 'dart:ui' as ui;
+
+
 
 class ProductsGrid extends StatefulWidget {
   const ProductsGrid({super.key});
@@ -22,8 +26,10 @@ class _ProductsGridState extends State<ProductsGrid> {
       cubit.fetchproducts();
     }
   }
+  @override
   Widget build(BuildContext context) {
 
+    bool isArabic = context.locale.languageCode == 'ar';
 
 
     double deviceHeight = MediaQuery.of(context).size.height;
@@ -144,17 +150,16 @@ class _ProductsGridState extends State<ProductsGrid> {
         if (state is ProductsLoadingState) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is ProductsFailureState) {
-          print("Error: ${state.errorMessage}"); // Debug log
+          print("Error: ${state.errorMessage}");
           return Center(child: Text('Error: ${state.errorMessage}'));
         } else if (state is ProductsSuccessState) {
           final products = context.read<ProductsCubit>().productList;
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            reverse: true,
             child: Wrap(
               spacing: 20.0.w,
               runSpacing: 20.0.h,
-              textDirection: TextDirection.rtl,
+              textDirection:isArabic ? ui.TextDirection.ltr: ui.TextDirection.rtl,
               children: List.generate(
                 products.length,
                     (index) {
@@ -186,6 +191,7 @@ class _ProductsGridState extends State<ProductsGrid> {
                                 ),
                               ),
                             ),
+
                             Text(
                               product.name.split(" ").join(" "),
                               style: const TextStyle(
@@ -197,90 +203,95 @@ class _ProductsGridState extends State<ProductsGrid> {
                               textAlign: TextAlign.end,
                             ),
                             SizedBox(height: 8.h),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    BlocProvider.of<ProductsCubit>(context)
-                                        .addCart(context, index);
-                                  },
-                                  child: Container(
-                                    height: 25.h,
-                                    width: 25.w,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.defaultcolor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.add,
-                                        size: 20,
-                                        color: AppColors.white,
+                            Directionality(
+                              textDirection:isArabic ? ui.TextDirection.ltr : ui.TextDirection.rtl,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      BlocProvider.of<ProductsCubit>(context).addCart(context, index);
+                                    },
+                                    child: Container(
+                                      height: 25.h,
+                                      width: 25.w,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.defaultcolor,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 20,
+                                          color: AppColors.white,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  "  ${product.price}  جنيه",
-                                  textDirection: TextDirection.rtl,
-                                  style: const TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.defaultcolor,
+                                  Text(
+                                    "  ${product.price}  ${"eg".tr()}",
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.defaultcolor,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
                       Positioned(
                         top: 5.h,
                         right: 5.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(5.w),
-                              height: container2.h,
-                              width: container2.w,
-                              decoration: BoxDecoration(
-                                color: AppColors.title,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                "-${product.discount}%",
-                                style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10,
+                        child: Directionality(
+                          textDirection: isArabic ? ui.TextDirection.ltr : ui.TextDirection.rtl,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5.w),
+                                height: container2.h,
+                                width: container2.w,
+                                decoration: BoxDecoration(
+                                  color: AppColors.title,
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(width: space.w),
-                            GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<ProductsCubit>(context).addFavorite(context, index);
-                                // BlocProvider.of<ProductsCubit>(context).updateicon(context, index);
-                              },
-                              child: CircleAvatar(
-                                radius: radius.r,
-                                backgroundColor: AppColors.white,
-                                child: Icon(
-                                  BlocProvider.of<ProductsCubit>(context)
-                                      .productList[index]
-                                      .inFavorites
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: AppColors.defaultcolor,
-                                  size: iconsize.sp,
+                                child: Text(
+                                  "-${product.discount}%",
+                                  style: const TextStyle(
+                                    color: AppColors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                          ],
+                              SizedBox(width: space.w),
+
+                              GestureDetector(
+                                onTap: () {
+                                  BlocProvider.of<ProductsCubit>(context).addFavorite(context, index);
+                                  // BlocProvider.of<ProductsCubit>(context).updateicon(context, index);
+                                },
+                                child: CircleAvatar(
+                                  radius: radius.r,
+                                  backgroundColor: AppColors.white,
+                                  child: Icon(
+                                    BlocProvider.of<ProductsCubit>(context)
+                                        .productList[index]
+                                        .inFavorites
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: AppColors.defaultcolor,
+                                    size: iconsize.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

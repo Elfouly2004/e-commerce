@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,8 +21,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isArabic = context.locale.languageCode == 'ar';
 
-    // تحديد مرونة Expanded بناءً على ارتفاع الجهاز
+    context.read<ProductsCubit>().fetchproducts();
+    context.read<BannersCubit>().fetchBanners();
+    context.read<CategoriesCubit>().fetchCategories(context);
+
+
     double deviceHeight = MediaQuery.of(context).size.height;
     int expandedFlex,  expandedFlex2 ,height, height2 ;
 
@@ -85,17 +91,16 @@ class HomePage extends StatelessWidget {
       height2 = 0;
     }
 
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  ${deviceHeight}");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA  $deviceHeight");
 
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
         if (state is NoInternetStates) {
           return NoInternetWidget(
             onRetry: () {
-              // استدعاء كابت لتحميل البيانات مرة أخرى
               context.read<ProductsCubit>().fetchproducts();
               context.read<BannersCubit>().fetchBanners();
-              context.read<CategoriesCubit>().fetchCategories();
+              context.read<CategoriesCubit>().fetchCategories(context);
             },
           );
         }
@@ -109,9 +114,9 @@ class HomePage extends StatelessWidget {
                 SizedBox(height: height.h),
 
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment:isArabic ? Alignment.centerRight: Alignment.centerLeft,
                   child: Text(
-                    AppTexts.Categories,
+                   "Categories".tr(),
                     style: GoogleFonts.almarai(
                       color: AppColors.Categories,
                       fontSize: 15.sp,
@@ -127,9 +132,9 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: 10,),
 
                 Align(
-                  alignment: Alignment.centerRight,
+                  alignment:isArabic ? Alignment.centerRight: Alignment.centerLeft,
                   child: Text(
-                    AppTexts.buy,
+                    "buy".tr(),
                     style: GoogleFonts.almarai(
                       color: AppColors.Categories,
                       fontSize: 15.sp,
@@ -168,163 +173,3 @@ class HomePage extends StatelessWidget {
 
 
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     double deviceHeight = MediaQuery.of(context).size.height;
-//     int expandedFlex, expandedFlex2, height, height2;
-//
-//     if (deviceHeight > 1400) {
-//       expandedFlex = 6;
-//       expandedFlex2 = 4;
-//       height = 270;
-//       height2 = 20;
-//     } else if (deviceHeight > 1340) {
-//       expandedFlex = 6;
-//       expandedFlex2 = 4;
-//       height = 150;
-//       height2 = 20;
-//     } else if (deviceHeight > 1000) {
-//       expandedFlex = 6;
-//       expandedFlex2 = 4;
-//       height = 230;
-//       height2 = 20;
-//     } else if (deviceHeight > 850) {
-//       expandedFlex = 6;
-//       expandedFlex2 = 5;
-//       height = 110;
-//       height2 = 20;
-//     } else if (deviceHeight >= 800) {
-//       expandedFlex = 4;
-//       expandedFlex2 = 4;
-//       height = 100;
-//       height2 = 20;
-//     } else if (deviceHeight > 750) {
-//       expandedFlex = 4;
-//       expandedFlex2 = 4;
-//       height = 100;
-//       height2 = 20;
-//     } else if (deviceHeight > 700) {
-//       expandedFlex = 1;
-//       expandedFlex2 = 1;
-//       height = 50;
-//       height2 = 0;
-//     } else {
-//       expandedFlex = 1;
-//       expandedFlex2 = 1;
-//       height = 50;
-//       height2 = 0;
-//     }
-//
-//     return Scaffold(
-//       body: Center(
-//         child: Column(
-//           children: [
-//             Expanded(
-//               child: BlocBuilder<ProductsCubit, ProductsState>(
-//                 builder: (context, state) {
-//                   if (state is NoInternetState) {
-//                     return Column(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         NoInternetWidget(),
-//                         SizedBox(height: 20.h),
-//                         ElevatedButton(
-//                           onPressed: () {
-//                             // context.read<ProductsCubit>().fetchproducts();
-//                             // context.read<BannersCubit>().fetchBanners();
-//                             // context.read<CategoriesCubit>().fetchCategories();
-//                           },
-//                           style: ElevatedButton.styleFrom(
-//                             backgroundColor: AppColors.Appbar3,
-//                             padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(10),
-//                             ),
-//                           ),
-//                           child: Text(
-//                             "إعادة تحميل",
-//                             style: GoogleFonts.almarai(
-//                               fontSize: 16.sp,
-//                               fontWeight: FontWeight.bold,
-//                               color: Colors.white,
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     );
-//                   }
-//                   return _buildHomeScreen(context, expandedFlex, expandedFlex2, height, height2);
-//                 },
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildHomeScreen(BuildContext context, int expandedFlex, int expandedFlex2, int height, int height2) {
-//     return HomeScreen(
-//       child2: Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 20),
-//         child: Column(
-//           children: [
-//             SizedBox(height: height.h),
-//
-//             Align(
-//               alignment: Alignment.centerRight,
-//               child: Text(
-//                 AppTexts.Categories,
-//                 style: GoogleFonts.almarai(
-//                   color: AppColors.Categories,
-//                   fontSize: 15.sp,
-//                   fontWeight: FontWeight.w700,
-//                 ),
-//               ),
-//             ),
-//
-//             Expanded(
-//               flex: expandedFlex,
-//               child: const CategoriesGrid(),
-//             ),
-//             const SizedBox(height: 10,),
-//
-//             Align(
-//               alignment: Alignment.centerRight,
-//               child: Text(
-//                 AppTexts.buy,
-//                 style: GoogleFonts.almarai(
-//                   color: AppColors.Categories,
-//                   fontSize: 15.sp,
-//                   fontWeight: FontWeight.w700,
-//                 ),
-//               ),
-//             ),
-//
-//             Expanded(
-//               flex: expandedFlex2,
-//               child: ProductsGrid(),
-//             ),
-//           ],
-//         ),
-//       ),
-//
-//       child: Column(
-//         children: [
-//           SizedBox(height: height2.h),
-//
-//           Center(
-//             child: Image(
-//               image: const AssetImage(AppImages.AppLogo),
-//               height: MediaQuery.sizeOf(context).height * 0.13,
-//               width: MediaQuery.sizeOf(context).height * 0.13,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -5,7 +5,7 @@ class FavItemModel extends Equatable {
   final int id;
   final ProductModel product;
 
-  FavItemModel({
+  const FavItemModel({
     required this.id,
     required this.product,
   });

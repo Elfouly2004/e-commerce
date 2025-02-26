@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../Category/presentation/view/category_screen.dart';
+import '../../../../Category/presentation/view/screens/category_screen.dart';
 import '../../controller/get_categories/get_categories_cubit.dart';
 import '../../controller/get_categories/get_categories_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';

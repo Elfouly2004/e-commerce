@@ -12,10 +12,10 @@ class CategoriesCubit extends Cubit<CategoriesState> {
 
   static CategoriesCubit get(context) => BlocProvider.of(context);
 
-  Future<void> fetchCategories() async {
+  Future<void> fetchCategories(context) async {
     emit(CategoriesLoadingState());
 
-    final result = await homeRepo.get_categories();
+    final result = await homeRepo.get_categories(context);
     result.fold((failure) {
       print("Error fetching categories: ${failure.message}");
       emit(CategoriesFailureState(errorMessage: failure.message));

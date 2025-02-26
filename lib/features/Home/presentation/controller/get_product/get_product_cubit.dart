@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -13,43 +12,27 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsInitialState());
 
   final HomeRepoImplementation homeRepo = HomeRepoImplementation();
-
-
   List<ProductModel> productList = [];
   List<CartItemModel> cartsList = [];
-
   var favoritesBox = Hive.box('favorites-product');
-
-
-
 
   static ProductsCubit get(context) => BlocProvider.of(context);
 
-
-
   Future<void> fetchproducts() async {
-    if (productList.isNotEmpty) {
-      emit(ProductsSuccessState());
-      return;
-    }
-
     emit(ProductsLoadingState());
 
     final result = await homeRepo.get_product();
     result.fold(
           (failure) {
-
-            if (failure is NoInternetFailure) {
-              emit(NoInternetStates());
-            }else{
-              print("Error fetching products: ${failure.message}");
-            emit(ProductsFailureState(errorMessage: failure.message));
-
-            }
-
+        if (failure is NoInternetFailure) {
+          emit(NoInternetStates());
+        } else {
+          print("Error fetching products: ${failure.message}");
+          emit(ProductsFailureState(errorMessage: failure.message));
+        }
       },
-          (right) {
-        productList = right;
+          (products) {
+        productList = products;
 
         for (var product in productList) {
           final savedFavorite = favoritesBox.get(product.id.toString());
@@ -64,65 +47,62 @@ class ProductsCubit extends Cubit<ProductsState> {
     );
   }
 
+  Future<void> addFavorite(BuildContext context, int index) async {
+    try {
+      final result = await homeRepo.Addfav(context: context, index: index);
 
+      result.fold(
+            (failure) {
+          print("Error adding to favorites: ${failure.message}");
+          emit(ProductsFailureState(errorMessage: failure.message));
+        },
+            (updatedProduct) {
+          productList[index].inFavorites = !productList[index].inFavorites;
 
-  Future<void> addFavorite(context, int index) async {
-    final result = await homeRepo.Addfav(context: context, index: index);
+          emit(updateFavoriteicon());
 
-    result.fold(
-          (failure) {
-        print("Error adding to favorites: ${failure.message}");
+          try {
+            favoritesBox.put(
+                productList[index].id.toString(), productList[index].inFavorites);
+          } catch (e) {
+            print("Error saving favorite to Hive: $e");
+          }
 
-        emit(ProductsFailureState(errorMessage: failure.message));
+          showDialog(
+            context: context,
+            builder: (context) {
+              return FavoriteDialog(isAdded: productList[index].inFavorites);
+            },
+          );
 
-           },
-          (updatedProduct) {
-
-
-              productList[index].inFavorites = !productList[index].inFavorites;
-
-              emit(updateFavoriteicon());
-
-        favoritesBox.put(productList[index].id.toString(), productList[index].inFavorites);
-
-
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return
-                    FavoriteDialog(
-
-                      isAdded: productList[index].inFavorites,
-                    );
-                },
-              );
-
-
-
-        emit(ProductsSuccessState());
-      },
-    );
+          emit(ProductsSuccessState());
+        },
+      );
+    } catch (e) {
+      print("Unexpected error in addFavorite: $e");
+    }
   }
 
+  Future<void> addCart(BuildContext context, int index) async {
+    try {
+      final result = await homeRepo.Add_carts(context: context, index: index);
 
+      result.fold(
+            (failure) {
+          emit(ProductsFailureState(errorMessage: failure.message));
+        },
+            (updatedProduct) {
+          if (index < cartsList.length) {
+            cartsList[index] = updatedProduct;
+          } else {
+            cartsList.add(updatedProduct);
+          }
 
-
-  Future<void> addCart(context, int index) async {
-    final result = await homeRepo.Add_carts(context: context, index: index);
-
-    result.fold(
-          (failure) {
-            emit(ProductsFailureState(errorMessage: failure.message));
-      },
-          (updatedProduct) {
-
-        cartsList[index] = updatedProduct;
-
-        emit(ProductsSuccessState());
-      },
-    );
+          emit(ProductsSuccessState());
+        },
+      );
+    } catch (e) {
+      print("Unexpected error in addCart: $e");
+    }
   }
-
-
-
 }

@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mrcandy/features/Home/data/model/product_model.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/utils/endpoints.dart';
-import '../../../carts/presentation/controller/carts_cubit.dart';
+import '../../../../main.dart';
 import '../../presentation/controller/fav_cubit.dart';
 import '../model/fav_model.dart';
 import 'fav_repo.dart';
@@ -19,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 class FavRepoImplemntation implements FavRepo {
 
+  String get currentLang => EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
 
 
   @override
@@ -31,6 +31,8 @@ class FavRepoImplemntation implements FavRepo {
         Uri.parse(EndPoints.baseUrl + EndPoints.favorites),
         headers: {
           "Authorization": "$token",
+          "lang": currentLang,
+
         },
       );
       if (response.statusCode == 200) {
@@ -72,6 +74,7 @@ class FavRepoImplemntation implements FavRepo {
     }
   }
 
+  @override
   Future<Either<Failure, void>> DeleteFav({context, required int index}) async {
     try {
       final token = Hive.box("setting").get("token");

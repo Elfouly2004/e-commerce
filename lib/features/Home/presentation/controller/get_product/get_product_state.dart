@@ -16,7 +16,9 @@ class ProductsFailureState extends ProductsState {
   ProductsFailureState({required this.errorMessage});
 }
 
-class ProductsSuccessState extends ProductsState {}
+class ProductsSuccessState extends ProductsState {
+
+}
 
 class updateFavoriteicon extends ProductsState {}
 

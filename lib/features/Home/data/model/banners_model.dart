@@ -7,7 +7,7 @@ class BannersModel extends Equatable {
   final Map<String, dynamic>? category;
   final String? product;
 
-  BannersModel({
+  const BannersModel({
     required this.urlImage,
     required this.id,
     this.category,

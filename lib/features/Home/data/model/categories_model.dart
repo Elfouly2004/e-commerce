@@ -7,7 +7,7 @@ class CategoriesModel extends Equatable {
 
   final String name;
 
-  CategoriesModel({
+  const CategoriesModel({
     required this.urlImage,
     required this.id,
     required this.name,
