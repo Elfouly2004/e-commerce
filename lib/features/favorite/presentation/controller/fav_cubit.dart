@@ -38,28 +38,27 @@ class FavoritesCubit extends Cubit<FavoritesState> {
   }
 
   Future<void> deletefav(BuildContext context, int index) async {
-    loadingIndex = index;
-    emit(FavoritesSuccessState(List.from(favoritesList)));
 
     final result = await FavRepo.DeleteFav(context: context, index: index);
 
     result.fold(
           (failure) {
-        debugPrint(" Error Deleting Favorite: ${failure.message}");
-        loadingIndex = null;
-        emit(FavoritesSuccessState(List.from(favoritesList)));
+       emit(FavoritesFailureState(failure.message));
       },
           (_) {
-        debugPrint("🟢 Favorite Deleted Successfully: Index $index");
 
 
-        if (index >= 0 && index < favoritesList.length) {
+        debugPrint("Favorite Deleted Successfully: Index $index");
+
+
+             emit(FavoritesLoadingState());
+
           favoritesList.removeAt(index);
-        }
-        loadingIndex = null;
 
 
-        fetchFavorites();
+        emit(FavoritesSuccessState(List.from(favoritesList)));
+
+
       },
     );
   }

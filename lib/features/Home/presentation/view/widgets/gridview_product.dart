@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../favorite/presentation/controller/fav_cubit.dart';
 import '../../controller/get_product/get_product_cubit.dart';
 import '../../controller/get_product/get_product_state.dart';
 import 'dart:ui' as ui;
@@ -274,6 +275,9 @@ class _ProductsGridState extends State<ProductsGrid> {
                               GestureDetector(
                                 onTap: () {
                                   BlocProvider.of<ProductsCubit>(context).addFavorite(context, index);
+
+                                  context.read<FavoritesCubit>().fetchFavorites();
+
                                   // BlocProvider.of<ProductsCubit>(context).updateicon(context, index);
                                 },
                                 child: CircleAvatar(

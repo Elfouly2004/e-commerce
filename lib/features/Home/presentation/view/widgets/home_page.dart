@@ -23,9 +23,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isArabic = context.locale.languageCode == 'ar';
 
-    context.read<ProductsCubit>().fetchproducts();
-    context.read<BannersCubit>().fetchBanners();
-    context.read<CategoriesCubit>().fetchCategories(context);
+
 
 
     double deviceHeight = MediaQuery.of(context).size.height;

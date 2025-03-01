@@ -1,4 +1,3 @@
-// Categories_model.dart
 import 'package:equatable/equatable.dart';
 
 class CategoriesModel extends Equatable {

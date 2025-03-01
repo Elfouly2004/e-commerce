@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';  // استيراد مكتبة G
 import '../core/utils/app_colors.dart';
 
 class Rich_Text extends StatelessWidget {
-  const Rich_Text({super.key, this.onTap, this.text1, this.text2});
+  const Rich_Text({super.key, this.onTap, this.text1, this.text2,});
   final void Function()? onTap;
   final String? text1;
   final String? text2;

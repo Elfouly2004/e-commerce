@@ -5,6 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mrcandy/core/utils/extensions/trans.dart';
 import '../../../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../Home/presentation/controller/get_banners/get_banners_cubit.dart';
+import '../../../../../Home/presentation/controller/get_categories/get_categories_cubit.dart';
+import '../../../../../Home/presentation/controller/get_product/get_product_cubit.dart';
 import '../../../controller/cubit/setting/setting_cubit.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -47,6 +50,13 @@ class _LanguagePageState extends State<LanguagePage> {
                   onChanged: (value) {
                     Locale newLocale = value ? const Locale('ar') : const Locale('en');
                     context.setLocale(newLocale);
+
+
+                    context.read<ProductsCubit>().fetchproducts();
+                    context.read<BannersCubit>().fetchBanners();
+                    context.read<CategoriesCubit>().fetchCategories(context);
+
+
                     setState(() {});
                   },
                   activeColor: AppColors.Appbar3,

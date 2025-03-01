@@ -12,7 +12,6 @@ import 'features/Home/presentation/controller/get_categories/get_categories_cubi
 import 'features/Home/presentation/controller/get_product/get_product_cubit.dart';
 import 'features/carts/presentation/controller/carts_cubit.dart';
 import 'features/change_pass/presentation/controller/change_pass_cubit.dart';
-import 'features/favorite/presentation/controller/fav_cubit.dart';
 import 'features/login/presentation/controller/login_cubit.dart';
 import 'features/splash_screen/views/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,17 +30,17 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(
-      EasyLocalization(
-          supportedLocales: const [
-            Locale('ar'), // Arabic
-            Locale('en'), // English
-          ],
-          path: 'assets/translation', // Path to translation files
-          fallbackLocale: const Locale('ar'), // Fallback language
-          startLocale: const Locale('ar'),
+    EasyLocalization(
+        supportedLocales: const [
+          Locale('ar'),
+          Locale('en',),
+        ],
+        path: 'assets/translation',
+        fallbackLocale: const Locale('ar'),
+        startLocale: Locale(WidgetsBinding.instance.platformDispatcher.locale.languageCode),
 
-          child: MyApp()
-      ),
+        child: MyApp()
+    ),
   );
 }
 
@@ -55,7 +54,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ProductsCubit()..fetchproducts()),
         BlocProvider(create: (_) => BannersCubit()..fetchBanners()),
         BlocProvider(create: (_) => CategoriesCubit()..fetchCategories(context)),
-        BlocProvider(create: (_) => FavoritesCubit()..fetchFavorites()),
         BlocProvider(create: (_) => CartsCubit()..fetchCarts()),
         BlocProvider(create: (_) => ChangePassCubit(settingRepo: SettingRepoImplemntation())),
         BlocProvider(create: (_) => LoginCubit(LoginRepoImplementation())),
@@ -76,17 +74,17 @@ class AppView extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-            return MaterialApp(
-              navigatorKey: navigatorKey,
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
 
-              debugShowCheckedModeBanner: false,
-              title: 'Mr Candy',
-              home: splashscreen(),
-            );
-          },
+          debugShowCheckedModeBanner: false,
+          title: 'Mr Candy',
+          home: splashscreen(),
+        );
+      },
 
 
     );

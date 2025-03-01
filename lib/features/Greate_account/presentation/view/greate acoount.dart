@@ -1,5 +1,6 @@
 import 'dart:io';
 // لإضافة مكتبة dart:convert لتحويل الصورة إلى Base64
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +97,7 @@ class Greate_acoount extends StatelessWidget {
                               height: MediaQuery.of(context).size.height * 0.01,
                             ),
                             Text(
-                              AppTexts.choosephoto,
+                              "Add_profile_picture".tr(),
                               style: GoogleFonts.almarai(
                                 color: AppColors.defaultcolor,
                                 fontWeight: FontWeight.w400,
@@ -137,7 +138,7 @@ class Greate_acoount extends StatelessWidget {
                           ),
                         ],
                       ),
-                      hintText: "    ادخل الاسم ",
+                      hintText: "Enter_your_name".tr(),
                     ),
 
                     SizedBox(
@@ -170,7 +171,7 @@ class Greate_acoount extends StatelessWidget {
                           ),
                         ],
                       ),
-                      hintText: " ادخل البريد الالكنروني",
+                      hintText:"Enter_your_email".tr(),
                     ),
 
                     SizedBox(
@@ -203,7 +204,7 @@ class Greate_acoount extends StatelessWidget {
                           ),
                         ],
                       ),
-                      hintText: " ادخل رقم الهاتف ",
+                      hintText: "Enter_your_phone".tr(),
                     ),
 
                     SizedBox(
@@ -236,7 +237,7 @@ class Greate_acoount extends StatelessWidget {
                           ),
                         ],
                       ),
-                      hintText: " ادخل كلمة المرور",
+                      hintText: "Enter_your_password".tr(),
                     ),
 
                     SizedBox(
@@ -244,25 +245,24 @@ class Greate_acoount extends StatelessWidget {
                     ),
 
                     ButtonShare(
-                      data: "انشاء الحساب ",
+                      data: "Greate_account".tr(),
                       onTap: ()async {
-                        debugPrint("Mohamed before");
                      BlocProvider.of<GreateAccountCubit>(context).Greateacoount(context);
-                        debugPrint("Mohamed after");
                         },
                     ),
 
                     Rich_Text(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const Login(),
                           ),
                         );
+
                       },
-                      text1: AppTexts.yes_account,
-                      text2: AppTexts.login,
+                      text1: "yes_account".tr(),
+                      text2: "login".tr(),
                     ),
                   ],
                 ),

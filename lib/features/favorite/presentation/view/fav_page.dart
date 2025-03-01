@@ -47,10 +47,7 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesPageState extends State<FavoritesPage> {
   @override
-  void initState() {
-    super.initState();
-    context.read<FavoritesCubit>().fetchFavorites();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +55,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
     return Directionality(
       textDirection: isArabic ? ui.TextDirection.rtl :ui. TextDirection.ltr,
-      child: Scaffold(
+      child: BlocProvider(
+  create: (context) => FavoritesCubit()..fetchFavorites(),
+  child: Scaffold(
         backgroundColor: AppColors.white,
 
         appBar: PreferredSize(
@@ -207,6 +206,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
           ],
         ),
       ),
+),
     );
   }
 

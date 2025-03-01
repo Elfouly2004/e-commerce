@@ -1,5 +1,7 @@
 
 
+import 'package:easy_localization/easy_localization.dart';
+
 import '../../../../core/utils/app_images.dart';
 import '../../../../core/utils/app_texts.dart';
 
@@ -21,21 +23,21 @@ class OnboardingModel {
 List<OnboardingModel>  sliders = [
 
   OnboardingModel(
-      title: AppTexts.Slider1_Title,
+      title: "Slider1_Title".tr(),
       image: AppImages.slider1,
-      buttonText: AppTexts.Slider_Button1,
+      buttonText:"Slider_Button1".tr(),
   ) ,
 
 
   OnboardingModel(
-      title:AppTexts.Slider2_Title,
+      title:"Slider2_Title".tr(),
       image: AppImages.slider2,
-      buttonText:AppTexts.Slider_Button1,
+      buttonText:"Slider_Button1".tr(),
   ) ,
 
   OnboardingModel(
-      title: AppTexts.Slider3_Title,
+      title: "Slider3_Title".tr(),
       image: AppImages.slider3,
-      buttonText: AppTexts.Slider_Button2,
+      buttonText: "Slider_Button2".tr(),
   ),
 ];

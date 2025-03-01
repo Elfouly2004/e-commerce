@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; // استيراد Google Fonts
-
 import '../core/utils/app_colors.dart';
 
 class CustomTextformfeild extends StatelessWidget {
-  const CustomTextformfeild({super.key, 
+  const CustomTextformfeild({
+    super.key,
     required this.keyboardType,
     required this.suffixIcon,
-    required this.controller, this.hintText,
+    required this.controller,
+    this.hintText,
   });
 
   final TextInputType? keyboardType;
@@ -17,39 +18,49 @@ class CustomTextformfeild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      autofocus: false,
-      textDirection: TextDirection.ltr,
-      textAlign: TextAlign.right,
-      onTapOutside: (event) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      style: GoogleFonts.almarai(
-        color: AppColors.Textformfeild,
-        fontWeight: FontWeight.w500,
-        fontSize: 20,
-      ),
-      keyboardType: keyboardType,
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: AppColors.Textformfeild,
-            width: 1.5,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: AppColors.Textformfeild,
-            width: 2.0,
-          ),
-        ),
-        suffixIcon: suffixIcon,
-        hintText: hintText,
-        hintStyle: GoogleFonts.almarai(
+    bool isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: TextFormField(
+        controller: controller,
+        autofocus: false,
+        textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+        textAlign: isRTL ? TextAlign.right : TextAlign.left,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        style: GoogleFonts.almarai(
           color: AppColors.Textformfeild,
+          fontWeight: FontWeight.w500,
+          fontSize: 18,
+        ),
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12), // ضبط الهوامش الداخلية
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppColors.Textformfeild,
+              width: 1.5,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppColors.Textformfeild,
+              width: 2.0,
+            ),
+          ),
+          suffixIcon: Padding(
+            padding: EdgeInsets.only(left: isRTL ? 15 : 0, right: isRTL ? 0 : 15),
+            child: suffixIcon,
+          ),
+          hintText: hintText,
+          hintStyle: GoogleFonts.almarai(
+            color: AppColors.Textformfeild.withOpacity(0.7),
+            fontSize: 16,
+          ),
         ),
       ),
     );
