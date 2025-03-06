@@ -36,8 +36,8 @@ final Widget? leading;
           title,
           style: GoogleFonts.almarai(
             color: AppColors.white,
-            fontSize: 20.sp, // حجم الخط
-            fontWeight: FontWeight.bold, // سمك الخط
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,

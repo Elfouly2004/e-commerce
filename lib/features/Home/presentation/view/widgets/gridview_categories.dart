@@ -23,7 +23,7 @@ class CategoriesGrid extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 10.0,
+              crossAxisSpacing: 6.0,
               mainAxisSpacing: 10.0,
               childAspectRatio: 1.6,
             ),
@@ -66,7 +66,7 @@ class CategoriesGrid extends StatelessWidget {
                       Text(
                         category.name,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         ),

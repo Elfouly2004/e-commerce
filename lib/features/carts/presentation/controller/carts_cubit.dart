@@ -32,7 +32,7 @@ class CartsCubit extends Cubit<CartsState> {
         cartsList = data;
         totalprice = cartRepo.totalprice;
 
-        emit(CartsSuccessState(cartsList));
+        emit(CartsSuccessState( cartsList, ));
       },
     );
   }
@@ -52,13 +52,42 @@ class CartsCubit extends Cubit<CartsState> {
 
         cartsList.removeAt(index);
 
-        emit(CartsSuccessState(List.from(cartsList)));
+        emit(CartsSuccessState(cartsList,));
 
 
         print("deleeeeeeeeted");
       },
     );
   }
+
+
+  Future<void> updateCartQuantity(int cartId, int newQuantity) async {
+
+
+
+    print("Update Cart ID: $cartId  New Quantity: $newQuantity");
+
+    final result = await cartRepo.updateCarts(IDcart: cartId, quantity: newQuantity);
+
+    result.fold(
+          (failure) {
+        print("Update Failed: ${failure.message}");
+        emit(CartsFailureState(failure.message));
+      },
+          (updatedCarts) {
+        print("Cart Updated Successfully!");
+        cartsList = updatedCarts;
+        totalprice = updatedCarts.fold(0, (sum, item) => sum + (item.product.price * item.quantity));
+
+        emit(CartsSuccessState(cartsList));
+      },
+    );
+  }
+
+
+
+
+
 
 
 }

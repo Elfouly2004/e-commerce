@@ -23,11 +23,9 @@ class CartsRepoImplmentation implements CartsRepo {
   String get currentLang => EasyLocalization.of(navigatorKey.currentContext!)?.locale.languageCode ?? "ar";
 
 
-
 int totalprice=0;
   @override
   Future<Either<Failure, List<CartItemModel>>> getCarts() async {
-    List<CartItemModel> cartsList = [];
     final token = Hive.box("setting").get("token");
 
     try {
@@ -44,14 +42,12 @@ int totalprice=0;
         totalprice=body["data"]["total"].toInt();
         print('Response body: $body');
         if (body["status"] == true) {
-          cartsList = [];
-          for (var cartItem in body["data"]["cart_items"]) {
-            try {
-              cartsList.add(CartItemModel.fromJson(cartItem));
-            } catch (e) {
-              print("Error processing cart item: $e");
-            }
-          }
+
+
+          List<CartItemModel> cartsList = body["data"]["cart_items"]
+              .map<CartItemModel>((product) => CartItemModel.fromJson(product))
+              .toList();
+
           return right(cartsList);
         } else {
           return left(ApiFailure(message: body["message"] ?? "Unknown error"));
@@ -70,42 +66,52 @@ int totalprice=0;
 
 
   @override
-  Future<Either<Failure, List<CartItemModel>>> updateCarts({required int IDcart, required int quantity,}) async {
-    List<CartItemModel> cartsList = [];
+  Future<Either<Failure, List<CartItemModel>>> updateCarts({
+    required int IDcart,
+    required int quantity,
+  }) async {
     final token = Hive.box("setting").get("token");
 
     try {
       final response = await http.put(
-        Uri.parse("S{EndPoints.baseUrl + EndPoints.carts}/$IDcart"),
+        Uri.parse("${EndPoints.baseUrl + EndPoints.carts}/${IDcart}"),
         headers: {
           "Authorization": "$token",
+          "Content-Type": "application/json",
         },
         body: jsonEncode({
-          "quantity": quantity,
+          "quantity": quantity.toInt(),
         }),
       );
 
+      print("Updating cart with ID: $IDcart, Quantity: $quantity");
+
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
-        totalprice=body["data"]["total"].toInt();
-        print('Response body: $body');
-        if (body["status"] == true) {
-          cartsList = [];
-          for (var cartItem in body["data"]["cart_items"]) {
-            try {
-              cartsList.add(CartItemModel.fromJson(cartItem));
-            } catch (e) {
-              print("Error processing cart item: $e");
-            }
-          }
-          return right(cartsList);
-        } else {
+
+        if (body["status"] != true) {
           return left(ApiFailure(message: body["message"] ?? "Unknown error"));
         }
-      } else {
-        return left(ApiFailure(message: "Failed to fetch data, Status code: ${response.statusCode}"));
-      }
 
+        totalprice = body["data"]["total"]?.toInt() ?? 0;
+
+        final List<CartItemModel> cartItems = [];
+
+        if (body["data"].containsKey("cart_items") && body["data"]["cart_items"] != null) {
+          final List<dynamic> cartItemsJson = body["data"]["cart_items"];
+          cartItems.addAll(cartItemsJson.map((e) => CartItemModel.fromJson(e)));
+        } else {
+          print("Warning: 'cart_items' not found in response");
+        }
+
+
+        return right(cartItems);
+      } else {
+        return left(ApiFailure(
+            message: "Failed to fetch data, Status code: ${response.statusCode}"));
+      }
     } on SocketException {
       return left(NoInternetFailure(message: "No Internet"));
     } catch (e) {
@@ -114,7 +120,10 @@ int totalprice=0;
     }
   }
 
+
   @override
+
+
   Future<Either<Failure, CartItemModel>> DeleteCarts({context, index}) async {
     print("Token is: ${Hive.box("setting").get("token")}");
     final token = Hive.box("setting").get("token");

@@ -20,7 +20,7 @@ class LanguagePage extends StatefulWidget {
 class _LanguagePageState extends State<LanguagePage> {
   @override
   Widget build(BuildContext context) {
-    bool isEnglish = context.locale.languageCode == 'ar';
+    bool isArabic = context.locale.languageCode == 'ar';
 
     return Scaffold(
       appBar: PreferredSize(
@@ -46,7 +46,7 @@ class _LanguagePageState extends State<LanguagePage> {
               children: [
                 Text("🇬🇧 English", style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
                 Switch(
-                  value: isEnglish,
+                  value: isArabic,
                   onChanged: (value) {
                     Locale newLocale = value ? const Locale('ar') : const Locale('en');
                     context.setLocale(newLocale);

@@ -14,7 +14,7 @@
     "Enter_your_phone": "أدخل رقم الهاتف",
     "Greate_account": "انشاء الحساب",
     "signup_login": "قم بإنشاء حساب",
-    "yes_account": "هل لديك حساب؟",
+    "yes_account":"هل لديك حساب؟",
     "login": "قم بتسجيل الدخول",
     "choosephoto": "اضف صورة شخصية",
     "Categories": "الاقسام",
@@ -54,9 +54,5 @@
     "Enternewpassword": "أدخل كلمة المرور الجديدة",
     "CurrentPassword": "كلمه المرور الحاليه",
     "newpassword": "كلمه المرور الجديدة"
-
-
-
-
 
 }

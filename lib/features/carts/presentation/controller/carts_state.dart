@@ -13,13 +13,12 @@ class CartsLoadingState extends CartsState {}
 
 class CartsSuccessState extends CartsState {
   final List<CartItemModel> cartsList;
-
   CartsSuccessState(this.cartsList);
 }
-
 class CartsFailureState extends CartsState {
   final String errorMessage;
   CartsFailureState(this.errorMessage);
 }
 
 class cart_nointernetStates extends CartsState {}
+class cart_updateStates extends CartsState {}

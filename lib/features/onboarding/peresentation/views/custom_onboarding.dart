@@ -168,8 +168,12 @@ class _SliderpageState extends State<Sliderpage> {
             left: 20,
             child: TextButton(
               onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const Login()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Login(),
+                  ),
+                );
               },
               child: const Text(
                 "تخطي",

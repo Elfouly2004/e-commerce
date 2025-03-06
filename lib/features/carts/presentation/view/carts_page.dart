@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/shared_widgets/custom_lottie.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_texts.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../controller/carts_cubit.dart';
 import '../controller/carts_state.dart';
@@ -31,8 +30,10 @@ class _CartsPageState extends State<CartsPage> {
     await context.read<CartsCubit>().fetchCarts();
   }
   @override
+
+  int Quantity = 1;
+
   Widget build(BuildContext context) {
-    final cubit = context.watch<CartsCubit>();
 
     return Scaffold(
       appBar: PreferredSize(
@@ -67,6 +68,7 @@ class _CartsPageState extends State<CartsPage> {
                   } else if (state is CartsSuccessState) {
                     final cartItems = state.cartsList;
                     if (cartItems.isEmpty) {
+
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -121,14 +123,16 @@ class _CartsPageState extends State<CartsPage> {
                     alignment: context.locale.languageCode == 'ar'
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
-                    child: Text(
-                      "${"total".tr()} : ${cubit.totalprice} ${"eg".tr()} ",
+                    child:Text(
+                      "${"total".tr()} : ${context.watch<CartsCubit>().totalprice} ${"eg".tr()} ",
                       style: GoogleFonts.cairo(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
                         color: AppColors.Appbar3,
                       ),
                     ),
+
+
                   ),
                 ),
 
