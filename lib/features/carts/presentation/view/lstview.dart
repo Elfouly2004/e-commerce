@@ -55,6 +55,25 @@ class Lstview extends StatefulWidget {
 class _LstviewState extends State<Lstview> {
 
   int Quantity = 1;
+  void incrementQuantity(int index) {
+    setState(() {
+      widget.cartitems[index] = widget.cartitems[index].copyWith(
+        quantity: widget.cartitems[index].quantity + 1,
+      );
+    });
+  }
+
+  void decrementQuantity(int index) {
+    if (widget.cartitems[index].quantity > 1) {
+      setState(() {
+        widget.cartitems[index] = widget.cartitems[index].copyWith(
+          quantity: widget.cartitems[index].quantity - 1,
+        );
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -67,163 +86,153 @@ class _LstviewState extends State<Lstview> {
         } else if (state is CartsSuccessState) {
           final cartItems = state.cartsList;
 
-          return ListView.builder(
+          return Expanded(
+            child: ListView.builder(
             itemCount: cartItems.length,
-            padding: const EdgeInsets.all(15.0),
-            itemBuilder: (context, index) {
-              final item = cartItems[index];
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Container(
-                  height: 175.h,
-                  width: 330.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.gridproduct,
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                  child: Stack(
-                    children: [
-                      // زر الحذف
-                      Positioned(
-                        top: 0,
-                        left: isArabic ? null : 0,
-                        right: isArabic ? 0 : null,
-                        child: InkWell(
-                          onTap: () {
-                            BlocProvider.of<CartsCubit>(context).deleteCart(context, index);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(isArabic ? 20.r : 0),
-                                topLeft: Radius.circular(isArabic ? 0 : 20.r),
-                                bottomLeft: Radius.circular(isArabic ? 25.r : 2.r),
-                                bottomRight: Radius.circular(isArabic ? 2.r : 25.r),
+              padding: const EdgeInsets.all(15.0),
+              itemBuilder: (context, index) {
+                final item = cartItems[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Container(
+                    height: 175.h,
+                    width: 330.w,
+                    decoration: BoxDecoration(
+                      color: AppColors.gridproduct,
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 0,
+                          left: isArabic ? null : 0,
+                          right: isArabic ? 0 : null,
+                          child: InkWell(
+                            onTap: () {
+                              BlocProvider.of<CartsCubit>(context).deleteCart(context, index);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(isArabic ? 20.r : 0),
+                                  topLeft: Radius.circular(isArabic ? 0 : 20.r),
+                                  bottomLeft: Radius.circular(isArabic ? 25.r : 2.r),
+                                  bottomRight: Radius.circular(isArabic ? 2.r : 25.r),
+                                ),
                               ),
-                            ),
-                            child: Text(
-                              "delete".tr(),
-                              style: GoogleFonts.cairo(
-                                fontSize: 12.sp,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                              child: Text(
+                                "delete".tr(),
+                                style: GoogleFonts.cairo(
+                                  fontSize: 12.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
 
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(top: 15, start: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            if (!isArabic) _buildProductImage(item),
-                            SizedBox(width: 15.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(height: 10),
-                                  Text(
-                                    item.product.name,
-                                    textDirection: isArabic ? ui.TextDirection.rtl : ui.TextDirection.ltr,
-                                    style: GoogleFonts.almarai(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.cartresult,
+                        Padding(
+                          padding: EdgeInsetsDirectional.only(top: 15, start: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (!isArabic) _buildProductImage(item),
+                              SizedBox(width: 15.w),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 10),
+                                    Text(
+                                      item.product.name,
+                                      textDirection: isArabic ? ui.TextDirection.rtl : ui.TextDirection.ltr,
+                                      style: GoogleFonts.almarai(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.cartresult,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  Row(
-                                    children: [
-                                      Richtxt(
-                                        txt1: "Amount".tr(),
-                                        txt2: "${item.quantity}",
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  Row(
-                                    children: [
+                                    SizedBox(height: 5.h),
+                                    Row(
+                                      children: [
+                                        Richtxt(
+                                          txt1: "Amount".tr(),
+                                          txt2: "${item.quantity}",
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Row(
+                                      children: [
 
-                                      Richtxt(
-                                        txt1: " ${"total".tr()} : ",
-                                        txt2: "${item.product.price * item.quantity} ${"eg".tr()}",
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        Richtxt(
+                                          txt1: " ${"total".tr()} : ",
+                                          txt2: "${item.product.price * item.quantity} ${"eg".tr()}",
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            if (isArabic) _buildProductImage(item),
-                          ],
+                              if (isArabic) _buildProductImage(item),
+                            ],
+                          ),
                         ),
-                      ),
 
-                      Positioned(
-                        top: 120.h,
-                        left: isArabic ? null : 130,
-                        right: isArabic ? 130 : null,
-                        child: Row(
-                          children: [
-                            _buildQuantityButton(
-                              icon: Icons.remove,
-                              color: AppColors.bottom_g1,
-                              onTap: () {
-                                if (item.quantity > 1) {
-                                  setState(() {
-                                    Quantity = item.quantity - 1;
-
-                                    BlocProvider.of<CartsCubit>(context).updateCartQuantity(item.id, item.quantity - 1);
-
-                                  });
+                        Positioned(
+                          top: 120.h,
+                          left: isArabic ? null : 130,
+                          right: isArabic ? 130 : null,
+                          child: Row(
+                            children: [
+                              _buildQuantityButton(
+                                icon: Icons.remove,
+                                color: AppColors.bottom_g1,
+                                onTap: () {
+                                  decrementQuantity(index);
 
 
-                                }
-                              },
-                            ),
-
-                            SizedBox(width: 10.w),
-                            Text(
-                              "${Quantity = item.quantity}",
-                              style: GoogleFonts.cairo(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
+                                },
                               ),
-                            ),
-                            SizedBox(width: 10.w),
-                            _buildQuantityButton(
-                              icon: Icons.add,
-                              color: AppColors.Appbar3,
-                              onTap: () {
-                                setState(() {
-                                  Quantity = item.quantity + 1;
 
-                                });
-                                BlocProvider.of<CartsCubit>(context).updateCartQuantity(item.id, item.quantity + 1);
+                              SizedBox(width: 10.w),
+                              Text(
+                                "${item.quantity}",
+                                style: GoogleFonts.cairo(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 10.w),
+                              _buildQuantityButton(
+                                icon: Icons.add,
+                                color: AppColors.Appbar3,
+                                onTap: () {
+                                  incrementQuantity(index);
 
 
+                                },
+                              ),
 
-                              },
-                            ),
 
-
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
+
+
         } else if (state is CartsFailureState) {
           return Center(child: Text(state.errorMessage));
         } else {

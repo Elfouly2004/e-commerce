@@ -15,7 +15,7 @@ class CartItemModel extends Equatable {
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
     return CartItemModel(
       id: json['id'] ?? 0,
-      quantity: json['quantity'] ?? 0,
+      quantity: json['quantity'] ?? 1,
       product: ProductModel.fromJson(json['product'] ?? {}),
     );
   }
@@ -26,6 +26,14 @@ class CartItemModel extends Equatable {
       'quantity': quantity,
       'product': product.toJson(),
     };
+  }
+
+  CartItemModel copyWith({int? quantity}) {
+    return CartItemModel(
+      id: id,
+      quantity: quantity ?? this.quantity,
+      product: product,
+    );
   }
 
   @override

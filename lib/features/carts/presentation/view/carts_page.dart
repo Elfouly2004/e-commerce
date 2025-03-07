@@ -31,7 +31,8 @@ class _CartsPageState extends State<CartsPage> {
   }
   @override
 
-  int Quantity = 1;
+  int quantity = 1;
+
 
   Widget build(BuildContext context) {
 
@@ -124,7 +125,7 @@ class _CartsPageState extends State<CartsPage> {
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child:Text(
-                      "${"total".tr()} : ${context.watch<CartsCubit>().totalprice} ${"eg".tr()} ",
+                      "${"total".tr()} :${context.watch<CartsCubit>().totalprice}${"eg".tr()}",
                       style: GoogleFonts.cairo(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
@@ -138,17 +139,17 @@ class _CartsPageState extends State<CartsPage> {
 
                 SizedBox(height: 10.h),
 
+
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    for (var item in context.read<CartsCubit>().cartsList) {
+                      await BlocProvider.of<CartsCubit>(context).updateCartQuantity(item.id, item.quantity);
+                    }
+
+                    await context.read<CartsCubit>().confirmCartUpdates();
+                  },
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 12.h,
-                      horizontal: 30.w,
-                    ),
                     backgroundColor: AppColors.Appbar3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
                   ),
                   child: Text(
                     "confirm".tr(),
@@ -159,9 +160,14 @@ class _CartsPageState extends State<CartsPage> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ),
+
+
+
+
         ],
       ),
     );

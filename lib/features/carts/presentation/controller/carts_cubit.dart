@@ -62,10 +62,7 @@ class CartsCubit extends Cubit<CartsState> {
 
 
   Future<void> updateCartQuantity(int cartId, int newQuantity) async {
-
-
-
-    print("Update Cart ID: $cartId  New Quantity: $newQuantity");
+    print("Updating Cart - ID: $cartId, New Quantity: $newQuantity");
 
     final result = await cartRepo.updateCarts(IDcart: cartId, quantity: newQuantity);
 
@@ -76,6 +73,7 @@ class CartsCubit extends Cubit<CartsState> {
       },
           (updatedCarts) {
         print("Cart Updated Successfully!");
+
         cartsList = updatedCarts;
         totalprice = updatedCarts.fold(0, (sum, item) => sum + (item.product.price * item.quantity));
 
@@ -85,6 +83,13 @@ class CartsCubit extends Cubit<CartsState> {
   }
 
 
+
+  Future<void> confirmCartUpdates() async {
+    for (var item in cartsList) {
+      await cartRepo.updateCarts(IDcart: item.id, quantity: item.quantity);
+    }
+    await fetchCarts();
+  }
 
 
 
