@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
@@ -89,9 +91,30 @@ class _FavoritesPageState extends State<FavoritesPage> {
                     );
                   } else if (state is FavoritesSuccessState) {
                     final favorites = state.favorites;
-
                     if (favorites.isEmpty) {
-                      return const Center(child: Text("No Favorites Found"));
+
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              'assets/animations/Animation - 1739270151606.json',
+                              height: 200,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              "المفضله فارغه",
+                              style: GoogleFonts.cairo(
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     }
 
                     return RefreshIndicator(

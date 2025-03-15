@@ -84,6 +84,10 @@ class CartsCubit extends Cubit<CartsState> {
 
 
 
+
+
+
+
   Future<void> confirmCartUpdates() async {
     for (var item in cartsList) {
       await cartRepo.updateCarts(IDcart: item.id, quantity: item.quantity);

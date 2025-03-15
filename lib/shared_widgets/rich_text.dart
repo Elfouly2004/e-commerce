@@ -17,13 +17,13 @@ class Rich_Text extends StatelessWidget {
         children: [
           TextSpan(
             text: text1,
-            style: GoogleFonts.almarai(  // استخدام Google Fonts هنا
+            style: GoogleFonts.almarai(
               color: AppColors.grey,
             ),
           ),
           TextSpan(
             text: text2,
-            style: GoogleFonts.almarai(  // استخدام Google Fonts هنا أيضًا
+            style: GoogleFonts.almarai(
               color: AppColors.grey,
               decoration: TextDecoration.underline,
             ),

@@ -12,7 +12,7 @@ final void Function()? onTap;
     return  InkWell(
       onTap: onTap,
       child: Container(
-        width: 250.w,
+        width: 320.w,
         height: 60.h,
         decoration: BoxDecoration(
           gradient: const LinearGradient(

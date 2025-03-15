@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mrcandy/features/carts/presentation/controller/carts_state.dart';
 
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_texts.dart';
-import '../controller/carts_cubit.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_texts.dart';
+import '../../controller/carts_cubit.dart';
 import 'Richtxt.dart';
 import 'dart:ui' as ui;
 
@@ -83,7 +83,8 @@ class _LstviewState extends State<Lstview> {
       builder: (context, state) {
         if (state is CartsLoadingState) {
           return Center(child: CircularProgressIndicator());
-        } else if (state is CartsSuccessState) {
+        }
+        else if (state is CartsSuccessState) {
           final cartItems = state.cartsList;
 
           return Expanded(
