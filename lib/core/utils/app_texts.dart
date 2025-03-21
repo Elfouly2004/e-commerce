@@ -20,7 +20,7 @@ class AppTexts {
   static const String Setting = "Settings";
   static const String bag = "السله";
   static const String Amount = "الكميه :";
-  static const String Total = " الاجمالي :";
+  static const String Total = "Total ";
   static const String Addcart = " أضف إلى السلة ";
   static const String price = "السعر";
   static const String discoundt = "الخصم";
@@ -35,5 +35,11 @@ class AppTexts {
   static const String ok = 'موافق';
   static const String ChangePassword = "Change Password";
   static const String PrivacySettings = "Privacy Settings";
+  static const String thankyou = " ! Thank you";
+  static const String  successful = "Your transaction was successful";
+  static const String  date = "Date";
+  static const String  time = "Time";
+  static const String  to = "To";
+
 
 }

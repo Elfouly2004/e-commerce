@@ -18,11 +18,14 @@ class ThankyouBody extends StatelessWidget {
      clipBehavior: Clip.none,
         children: [
 
-         const ThankyouCard(),
+
+
+
+          const ThankyouCard(),
 
 
           Positioned(
-            bottom: 250.h+20,
+            bottom: MediaQuery. sizeOf(context) .height *0.2+20,
             left: 20+8,
             right: 20+8,
             child: CustomDachedLine(),
@@ -32,14 +35,14 @@ class ThankyouBody extends StatelessWidget {
 
           Positioned(
             left: -20,
-              bottom: 250.h,
+              bottom: MediaQuery. sizeOf(context) .height *0.2,
               child: CircleAvatar(
             backgroundColor: AppColors.white,
           )),
 
           Positioned(
             right: -20,
-              bottom: 250.h,
+              bottom: MediaQuery. sizeOf(context) .height *0.2,
               child: CircleAvatar(
             backgroundColor: AppColors.white,
           )),
