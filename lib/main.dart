@@ -13,6 +13,8 @@ import 'features/Home/presentation/controller/get_product/get_product_cubit.dart
 import 'features/carts/presentation/controller/carts_cubit.dart';
 import 'features/change_pass/presentation/controller/change_pass_cubit.dart';
 import 'features/login/presentation/controller/login_cubit.dart';
+import 'features/payment/presentation/view/payment_scren.dart';
+import 'features/payment/presentation/view/thankyou_screen.dart';
 import 'features/splash_screen/views/splash_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -82,7 +84,9 @@ class AppView extends StatelessWidget {
 
           debugShowCheckedModeBanner: false,
           title: 'Mr Candy',
-          home: splashscreen(),
+          // home: splashscreen(),
+          // home: PaymentScren(),
+          home: ThankyouScreen(),
         );
       },
 

@@ -23,10 +23,10 @@ final void Function()? onTap;
 
 
             ],
-            begin: Alignment.topLeft, // بداية التدرج
-            end: Alignment.bottomRight, // نهاية التدرج
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(15.r), // الزوايا المستديرة
+          borderRadius: BorderRadius.circular(15.r),
         ),
         child: Center(
           child: Text( text,

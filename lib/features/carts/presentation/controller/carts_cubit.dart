@@ -38,7 +38,6 @@ class CartsCubit extends Cubit<CartsState> {
   }
 
 
-
   Future<void> deleteCart(context, int index) async {
 
     final result = await cartRepo.DeleteCarts(context: context, index: index);
@@ -83,20 +82,14 @@ class CartsCubit extends Cubit<CartsState> {
   }
 
 
-
-
-
-
-
   Future<void> confirmCartUpdates() async {
+
     for (var item in cartsList) {
       await cartRepo.updateCarts(IDcart: item.id, quantity: item.quantity);
     }
+
+
     await fetchCarts();
   }
-
-
-
-
 
 }

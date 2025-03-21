@@ -9,6 +9,7 @@ import '../../../../core/shared_widgets/custom_button.dart';
 import '../../../../core/shared_widgets/custom_lottie.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
+import '../../../payment/presentation/view/payment_scren.dart';
 import '../controller/carts_cubit.dart';
 import '../controller/carts_state.dart';
 import 'widgets/lstview.dart';
@@ -116,6 +117,9 @@ class _CartsPageState extends State<CartsPage> {
 
                       CustomButton(
                         onTap: () async {
+
+
+
                           setState(() => isLoading = true);
                           for (var item in context.read<CartsCubit>().cartsList) {
                             await BlocProvider.of<CartsCubit>(context)
@@ -123,6 +127,8 @@ class _CartsPageState extends State<CartsPage> {
                           }
                           await context.read<CartsCubit>().confirmCartUpdates();
                           setState(() => isLoading = false);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScren(),));
+
                         },
                         text: "confirm".tr(),
                       ),
