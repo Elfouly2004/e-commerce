@@ -10,6 +10,7 @@ import '../../../../core/shared_widgets/custom_lottie.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/shared_widgets/custom_appbar.dart';
 import '../../../payment/presentation/view/payment_scren.dart';
+import '../../../payment/presentation/view/widgets/payment_method.dart';
 import '../controller/carts_cubit.dart';
 import '../controller/carts_state.dart';
 import 'widgets/lstview.dart';
@@ -118,16 +119,18 @@ class _CartsPageState extends State<CartsPage> {
                       CustomButton(
                         onTap: () async {
 
-
-
-                          setState(() => isLoading = true);
-                          for (var item in context.read<CartsCubit>().cartsList) {
-                            await BlocProvider.of<CartsCubit>(context)
-                                .updateCartQuantity(item.id, item.quantity);
-                          }
-                          await context.read<CartsCubit>().confirmCartUpdates();
-                          setState(() => isLoading = false);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScren(),));
+             showModalBottomSheet(context: context, builder: (context) {
+                return PaymentMethodBottomSheet( );
+                 },);
+                          //
+                          // setState(() => isLoading = true);
+                          // for (var item in context.read<CartsCubit>().cartsList) {
+                          //   await BlocProvider.of<CartsCubit>(context)
+                          //       .updateCartQuantity(item.id, item.quantity);
+                          // }
+                          // await context.read<CartsCubit>().confirmCartUpdates();
+                          // setState(() => isLoading = false);
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentScren(),));
 
                         },
                         text: "confirm".tr(),
@@ -148,5 +151,48 @@ class _CartsPageState extends State<CartsPage> {
     );
   }
 
+}
+
+class PaymentMethodBottomSheet extends StatefulWidget {
+  const PaymentMethodBottomSheet({super.key});
+
+  @override
+  State<PaymentMethodBottomSheet> createState() => _PaymentMethodBottomSheetState();
+}
+
+class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 20),
+          const PaymentMethod(),
+          const SizedBox(height: 32),
+          CustomButton(
+            onTap: () async {
+              setState(() => isLoading = true);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PaymentScren()),
+              );
+
+              for (var item in context.read<CartsCubit>().cartsList) {
+                await BlocProvider.of<CartsCubit>(context)
+                    .updateCartQuantity(item.id, item.quantity);
+              }
+              await context.read<CartsCubit>().confirmCartUpdates();
+              setState(() => isLoading = false);
+            },
+            text: "confirm".tr(),
+          )
+        ],
+      ),
+    );
+  }
 }
 

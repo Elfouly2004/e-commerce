@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mrcandy/features/payment/presentation/view/thankyou_screen.dart';
 import 'package:mrcandy/features/payment/presentation/view/widgets/custom_payment_body.dart';
 
 import '../../../../core/shared_widgets/custom_appbar.dart';
@@ -26,7 +27,7 @@ AutovalidateMode autovalidateMode=AutovalidateMode.disabled;
         ),
       ),
 
-body: CustomScrollView(
+       body: CustomScrollView(
     slivers:[
 
        SliverToBoxAdapter(
@@ -34,7 +35,7 @@ body: CustomScrollView(
 
         ),
 
-      SliverFillRemaining(
+           SliverFillRemaining(
         hasScrollBody: false,
       child:Align(
         alignment: Alignment.bottomCenter,
@@ -42,13 +43,15 @@ body: CustomScrollView(
           padding: const EdgeInsets.only(bottom: 12),
           child: CustomButton(
             onTap: () async {
-if (formkey.currentState!.validate()){
-  formkey.currentState!.save();
-}else{
-  autovalidateMode=AutovalidateMode.always;
-  setState(() {
+          if (formkey.currentState!.validate()){
+           formkey.currentState!.save();
+         }else{
+            autovalidateMode=AutovalidateMode.always;
+             Navigator.push(context, MaterialPageRoute(builder: (context) => ThankyouScreen(),));
 
-  });
+          setState(() {
+
+          });
 }
 
             }, text: "confirm".tr(),),

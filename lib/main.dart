@@ -84,9 +84,9 @@ class AppView extends StatelessWidget {
 
           debugShowCheckedModeBanner: false,
           title: 'Mr Candy',
-          // home: splashscreen(),
+          home: splashscreen(),
           // home: PaymentScren(),
-          home: ThankyouScreen(),
+          // home: ThankyouScreen(),
         );
       },
 
