@@ -1,7 +1,5 @@
 
 
-
-
 class AppTexts {
   static const String Slider1_Title= "موزع معتمد";
   static const String Slider2_Title = "طلباتك كلها عندنا";
@@ -43,3 +41,7 @@ class AppTexts {
 
 
 }
+
+
+
+

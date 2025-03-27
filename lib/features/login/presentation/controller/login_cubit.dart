@@ -10,7 +10,7 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit(this.loginRepo) : super(LoginInitial());
 
-  TextEditingController Email = TextEditingController();
+  TextEditingController  Email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   final LoginRepo loginRepo ;

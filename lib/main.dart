@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mrcandy/core/utils/api_keys.dart';
 import 'package:mrcandy/features/Greate_account/data/repo/Greate_account_impelemntation.dart';
 import 'package:mrcandy/features/login/data/repo/login_repo_impelemntation.dart';
 import 'package:mrcandy/features/settings/data/repo/setting_repo_implemntation.dart';
@@ -21,6 +23,7 @@ import 'package:easy_localization/easy_localization.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  Stripe.publishableKey=ApiKeys.publishkey;
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox("setting");
@@ -94,3 +97,6 @@ class AppView extends StatelessWidget {
     );
   }
 }
+
+
+

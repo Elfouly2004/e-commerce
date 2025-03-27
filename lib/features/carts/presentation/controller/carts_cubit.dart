@@ -11,7 +11,9 @@ class CartsCubit extends Cubit<CartsState> {
   final CartsRepoImplmentation cartRepo = CartsRepoImplmentation();
   List<CartItemModel> cartsList = [];
     int totalprice=0;
-  static CartsCubit get(context) => BlocProvider.of(context);
+
+
+    static CartsCubit get(context) => BlocProvider.of(context);
 
   Future<void> fetchCarts() async {
     emit(CartsLoadingState());

@@ -8,7 +8,9 @@ import 'login_repo.dart';
 
 class LoginRepoImplementation implements LoginRepo {
   @override
-  Future<Either<Failure, UserModel>> login({required String email, required String pass}) async {
+  Future<Either<Failure, UserModel>> login(
+      {required String email, required String pass}
+      ) async {
     try {
       final response = await http.post(
         Uri.parse("https://student.valuxapps.com/api/login"),

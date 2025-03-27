@@ -4,9 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.text, this.onTap});
+  const CustomButton({super.key, required this.text, this.onTap,
+    this.loading=false
+  });
 final String text;
 final void Function()? onTap;
+final bool loading;
   @override
   Widget build(BuildContext context) {
     return  InkWell(
@@ -29,7 +32,7 @@ final void Function()? onTap;
           borderRadius: BorderRadius.circular(15.r),
         ),
         child: Center(
-          child: Text( text,
+          child: loading?CircularProgressIndicator(color: AppColors.white,): Text( text,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
